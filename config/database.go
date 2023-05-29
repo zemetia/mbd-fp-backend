@@ -5,7 +5,7 @@ import (
 	"gin-gorm-clean-template/entity"
 	"os"
 
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -16,8 +16,9 @@ func SetupDatabaseConnection() *gorm.DB {
 	dbName := os.Getenv("DB_NAME")
 	dbPort := os.Getenv("DB_PORT")
 
-	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v TimeZone=Asia/Jakarta", dbHost, dbUser, dbPass, dbName, dbPort)
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v TimeZone=Asia/Jakarta", dbHost, dbUser, dbPass, dbName, dbPort)
+	dsn := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbPort, dbName)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
