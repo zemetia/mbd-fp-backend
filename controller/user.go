@@ -64,16 +64,16 @@ func (uc *userController) GetAllUser(ctx *gin.Context) {
 }
 
 func (uc *userController) LoginUser(ctx *gin.Context) {
-	var userLoginDTO dto.UserLoginDTO
-	err := ctx.ShouldBind(&userLoginDTO)
-	res, _ := uc.userService.Verify(ctx.Request.Context(), userLoginDTO.Email, userLoginDTO.Password)
+	var userLoginDto dto.UserLoginDto
+	err := ctx.ShouldBind(&userLoginDto)
+	res, _ := uc.userService.Verify(ctx.Request.Context(), userLoginDto.Email, userLoginDto.Password)
 	if !res {
 		response := common.BuildErrorResponse("Gagal Login", "Email atau Password Salah", common.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
 
-	user, err := uc.userService.FindUserByEmail(ctx.Request.Context(), userLoginDTO.Email)
+	user, err := uc.userService.FindUserByEmail(ctx.Request.Context(), userLoginDto.Email)
 	if err != nil {
 		response := common.BuildErrorResponse("Gagal Login", err.Error(), common.EmptyObj{})
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)

@@ -18,7 +18,7 @@ func LokasiRoutes(router *gin.Engine, LokasiController controller.LokasiControll
 		lokasiRoutes.POST("", middleware.Authenticate(jwtService), LokasiController.AddLokasi)
 		lokasiRoutes.GET("", middleware.Authenticate(jwtService), LokasiController.GetAllLokasi)
 
-		lokasiRoutes.GET("/:id", middleware.Authenticate(jwtService), lokasiRoutes.GetLokasi)
+		lokasiRoutes.GET("/:id", middleware.Authenticate(jwtService), LokasiController.GetLokasi)
 		lokasiRoutes.PATCH("/:id", middleware.Authenticate(jwtService), LokasiController.UpdateLokasi)
 		lokasiRoutes.DELETE("/:id", middleware.Authenticate(jwtService), LokasiController.DeleteLokasi)
 	}
