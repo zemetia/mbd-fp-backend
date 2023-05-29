@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"gin-gorm-clean-template/common"
-	"gin-gorm-clean-template/dto"
-	"gin-gorm-clean-template/entity"
-	"gin-gorm-clean-template/service"
+	"fp-mbd-amidrive/common"
+	"fp-mbd-amidrive/dto"
+	"fp-mbd-amidrive/entity"
+	"fp-mbd-amidrive/service"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,18 +20,18 @@ type UserController interface {
 }
 
 type userController struct {
-	jwtService service.JWTService
+	jwtService  service.JWTService
 	userService service.UserService
 }
 
 func NewUserController(us service.UserService, jwts service.JWTService) UserController {
 	return &userController{
 		userService: us,
-		jwtService: jwts,
+		jwtService:  jwts,
 	}
 }
 
-func(uc *userController) RegisterUser(ctx *gin.Context) {
+func (uc *userController) RegisterUser(ctx *gin.Context) {
 	var user dto.UserCreateDto
 	err := ctx.ShouldBind(&user)
 	checkUser, _ := uc.userService.CheckUser(ctx.Request.Context(), user.Email)
@@ -51,7 +51,7 @@ func(uc *userController) RegisterUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func(uc *userController) GetAllUser(ctx *gin.Context) {
+func (uc *userController) GetAllUser(ctx *gin.Context) {
 	result, err := uc.userService.GetAllUser(ctx.Request.Context())
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Mendapatkan List User", err.Error(), common.EmptyObj{})
@@ -63,7 +63,7 @@ func(uc *userController) GetAllUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func(uc *userController) LoginUser(ctx *gin.Context) {
+func (uc *userController) LoginUser(ctx *gin.Context) {
 	var userLoginDTO dto.UserLoginDTO
 	err := ctx.ShouldBind(&userLoginDTO)
 	res, _ := uc.userService.Verify(ctx.Request.Context(), userLoginDTO.Email, userLoginDTO.Password)
@@ -72,7 +72,7 @@ func(uc *userController) LoginUser(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	
+
 	user, err := uc.userService.FindUserByEmail(ctx.Request.Context(), userLoginDTO.Email)
 	if err != nil {
 		response := common.BuildErrorResponse("Gagal Login", err.Error(), common.EmptyObj{})
@@ -82,14 +82,14 @@ func(uc *userController) LoginUser(ctx *gin.Context) {
 	token := uc.jwtService.GenerateToken(user.ID, user.Role)
 	userResponse := entity.Authorization{
 		Token: token,
-		Role: user.Role,
+		Role:  user.Role,
 	}
-	
+
 	response := common.BuildResponse(true, "Berhasil Login", userResponse)
 	ctx.JSON(http.StatusOK, response)
 }
 
-func(uc *userController) DeleteUser(ctx *gin.Context) {
+func (uc *userController) DeleteUser(ctx *gin.Context) {
 	token := ctx.MustGet("token").(string)
 	userID, err := uc.jwtService.GetUserIDByToken(token)
 	// ctx.Set("token", "")
@@ -109,7 +109,7 @@ func(uc *userController) DeleteUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func(uc *userController) UpdateUser(ctx *gin.Context) {
+func (uc *userController) UpdateUser(ctx *gin.Context) {
 	var user dto.UserUpdateDto
 	err := ctx.ShouldBind(&user)
 	if err != nil {
@@ -117,7 +117,7 @@ func(uc *userController) UpdateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
-	
+
 	token := ctx.MustGet("token").(string)
 	userID, err := uc.jwtService.GetUserIDByToken(token)
 	if err != nil {
@@ -137,7 +137,7 @@ func(uc *userController) UpdateUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func(uc *userController) MeUser(ctx *gin.Context) {
+func (uc *userController) MeUser(ctx *gin.Context) {
 	token := ctx.MustGet("token").(string)
 	userID, err := uc.jwtService.GetUserIDByToken(token)
 	if err != nil {

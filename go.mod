@@ -1,4 +1,4 @@
-module gin-gorm-clean-template
+module fp-mbd-amidrive
 
 go 1.20
 

@@ -1,7 +1,7 @@
 package common
 
 import (
-	"gin-gorm-clean-template/entity"
+	"fp-mbd-amidrive/entity"
 	"math"
 
 	"gorm.io/gorm"

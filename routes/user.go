@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"gin-gorm-clean-template/controller"
-	"gin-gorm-clean-template/middleware"
-	"gin-gorm-clean-template/service"
+	"fp-mbd-amidrive/controller"
+	"fp-mbd-amidrive/middleware"
+	"fp-mbd-amidrive/service"
 
 	"github.com/gin-gonic/gin"
 )

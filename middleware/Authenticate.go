@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"gin-gorm-clean-template/common"
-	"gin-gorm-clean-template/service"
+	"fp-mbd-amidrive/common"
+	"fp-mbd-amidrive/service"
 	"net/http"
 	"strings"
 

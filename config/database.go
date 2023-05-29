@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"gin-gorm-clean-template/entity"
+	"fp-mbd-amidrive/entity"
 	"os"
 
 	"gorm.io/driver/mysql"

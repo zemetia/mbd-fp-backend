@@ -1,20 +1,20 @@
 package entity
 
 import (
-	"gin-gorm-clean-template/helpers"
+	"fp-mbd-amidrive/helpers"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID        	uuid.UUID   `gorm:"primary_key;not_null" json:"id"`
-	Name 		string 		`json:"name"`
-	Email 		string 		`json:"email" binding:"email"`
-	NoTelp 		string 		`json:"no_telp"`
-	Password 	string  	`json:"password"`
-	Role		string		`json:"role"`
-	
+	ID       uuid.UUID `gorm:"primary_key;not_null" json:"id"`
+	Name     string    `json:"name"`
+	Email    string    `json:"email" binding:"email"`
+	NoTelp   string    `json:"no_telp"`
+	Password string    `json:"password"`
+	Role     string    `json:"role"`
+
 	Timestamp
 }
 
