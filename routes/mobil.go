@@ -14,7 +14,6 @@ func MobilRoutes(router *gin.Engine, MobilController controller.MobilController,
 		mobilRoutes.POST("", middleware.Authenticate(jwtService), MobilController.AddMobil)
 		mobilRoutes.GET("", middleware.Authenticate(jwtService), MobilController.GetAllMobil)
 
-		mobilRoutes.POST("/:id/status", middleware.Authenticate(jwtService), MobilController.ChangeStatus)
 		mobilRoutes.GET("/:id", middleware.Authenticate(jwtService), MobilController.GetMobil)
 		mobilRoutes.PATCH("/:id", middleware.Authenticate(jwtService), MobilController.UpdateMobil)
 		mobilRoutes.DELETE("/:id", middleware.Authenticate(jwtService), MobilController.DeleteMobil)

@@ -9,7 +9,7 @@ type Mobil struct {
 	Nama           string    `gorm:"size:20;not null"`
 	Price          float32   `gorm:"not null"`
 	PelatNo        string    `gorm:"size:10;not null"`
-	Status         bool      `gorm:"not null"`
+	Status         bool      `gorm:"default:true"`
 	KapasitasMesin string    `gorm:"not null"`
 
 	MitraID          uuid.UUID `gorm:"type:uuid;not null"`
