@@ -14,8 +14,9 @@ func MembershipRoutes(router *gin.Engine, MembershipController controller.Member
 	{
 		membershipRoutes.GET("", MembershipController.GetAllMembership)
 		membershipRoutes.POST("", middleware.Authenticate(jwtService), MembershipController.AddMembership)
-		membershipRoutes.DELETE("", middleware.Authenticate(jwtService), MembershipController.DeleteMembership)
-		membershipRoutes.PATCH("", middleware.Authenticate(jwtService), MembershipController.UpdateMembership)
+		membershipRoutes.GET("/:id", middleware.Authenticate(jwtService), MembershipController.GetMembershipById)
+		membershipRoutes.PATCH("/:id", middleware.Authenticate(jwtService), MembershipController.UpdateMembership)
+		membershipRoutes.DELETE("/:id", middleware.Authenticate(jwtService), MembershipController.DeleteMembership)
 		membershipRoutes.GET("user/:id", middleware.Authenticate(jwtService), MembershipController.GetMembershipByUserId)
 	}
 }

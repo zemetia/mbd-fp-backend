@@ -4,6 +4,7 @@ import (
 	"github.com/google/uuid"
 )
 
+// Todo : add membership id (tier)
 type UserCreateDto struct {
 	ID       uuid.UUID `gorm:"primary_key" json:"id" form:"id"`
 	Name     string    `json:"name" form:"name" binding:"required"`
