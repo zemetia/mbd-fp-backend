@@ -15,8 +15,11 @@ import (
 func LokasiRoutes(router *gin.Engine, LokasiController controller.LokasiController, jwtService service.JWTService) {
 	lokasiRoutes := router.Group("/api/lokasi")
 	{
-		lokasiRoutes.POST("", LokasiController.AddLokasi)
+		lokasiRoutes.POST("", middleware.Authenticate(jwtService), LokasiController.AddLokasi)
 		lokasiRoutes.GET("", middleware.Authenticate(jwtService), LokasiController.GetAllLokasi)
-		lokasiRoutes.GET("/:id", lokasiRoutes.GetLokasi)
+
+		lokasiRoutes.GET("/:id", middleware.Authenticate(jwtService), lokasiRoutes.GetLokasi)
+		lokasiRoutes.PATCH("/:id", middleware.Authenticate(jwtService), LokasiController.UpdateLokasi)
+		lokasiRoutes.DELETE("/:id", middleware.Authenticate(jwtService), LokasiController.DeleteLokasi)
 	}
 }
