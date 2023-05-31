@@ -16,6 +16,6 @@ func MetodePembayaranRoutes(router *gin.Engine, MetodePembayaranController contr
 		metodePembayaranRoutes.POST("", middleware.Authenticate(jwtService), MetodePembayaranController.AddMetodePembayaran)
 		metodePembayaranRoutes.DELETE("/:id", middleware.Authenticate(jwtService), MetodePembayaranController.DeleteMetodePembayaran)
 		metodePembayaranRoutes.PATCH("/:id", middleware.Authenticate(jwtService), MetodePembayaranController.UpdateMetodePembayaran)
-		metodePembayaranRoutes.GET("/:id", middleware.Authenticate(jwtService), MetodePembayaranController.GetMetodePembayaranById)
+		metodePembayaranRoutes.GET("/:id", middleware.Authenticate(jwtService), MetodePembayaranController.GetMetodePembayaran)
 	}
 }

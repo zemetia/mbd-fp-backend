@@ -31,10 +31,25 @@ func main() {
 		userRepository repository.UserRepository = repository.NewUserRepository(db)
 		userService    service.UserService       = service.NewUserService(userRepository)
 		userController controller.UserController = controller.NewUserController(userService, jwtService)
+
+		lokasiRepository repository.LokasiRepository = repository.NewLokasiRepository(db)
+		lokasiService    service.LokasiService       = service.NewLokasiService(lokasiRepository)
+		lokasiController controller.LokasiController = controller.NewLokasiController(lokasiService, jwtService)
+
+		mobilRepository repository.MobilRepository = repository.NewMobilRepository(db)
+		mobilService    service.MobilService       = service.NewMobilService(mobilRepository)
+		mobilController controller.MobilController = controller.NewMobilController(mobilService, jwtService)
+
+		membershipRepository repository.MembershipRepository = repository.NewMembershipRepository(db)
+		membershipService    service.MembershipService       = service.NewMembershipService(membershipRepository)
+		membershipController controller.MembershipController = controller.NewMembershipController(membershipService, jwtService)
 	)
 
 	server := gin.Default()
 	routes.UserRoutes(server, userController, jwtService)
+	routes.LokasiRoutes(server, lokasiController, userService, jwtService)
+	routes.MobilRoutes(server, mobilController, jwtService)
+	routes.MembershipRoutes(server, membershipController, jwtService)
 
 	port := os.Getenv("PORT")
 	if port == "" {
