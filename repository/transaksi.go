@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fp-mbd-amidrive/entity"
+	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -14,6 +15,7 @@ type TransaksiRepository interface {
 	FindTransaksiByID(ctx context.Context, transaksiID uuid.UUID) (entity.Transaksi, error)
 	DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error
 	UpdateTransaksi(ctx context.Context, transaksi entity.Transaksi) error
+	UpdateMobilKembali(ctx context.Context, transaksiID uuid.UUID) error
 }
 
 type transaksiConnection struct {
@@ -82,6 +84,21 @@ func (db *transaksiConnection) DeleteTransaksi(ctx context.Context, transaksiID 
 func (db *transaksiConnection) UpdateTransaksi(ctx context.Context, transaksi entity.Transaksi) error {
 	uc := db.connection.Updates(&transaksi)
 	if uc.Error != nil {
+		return uc.Error
+	}
+	return nil
+}
+
+func (db *transaksiConnection) UpdateMobilKembali(ctx context.Context, transaksiID uuid.UUID) error {
+	var transaksi entity.Transaksi
+
+	uc := db.connection.Model(&entity.Transaksi{}).Where("id = ?", transaksiID).Update("tgl_dikembalikan", time.Now())
+	if uc.Error != nil {
+		return uc.Error
+	}
+
+	mc := db.connection.Model(&entity.Mobil{}).Where("id = ?", transaksi.MobilID).Update("status", true)
+	if mc.Error != nil {
 		return uc.Error
 	}
 	return nil

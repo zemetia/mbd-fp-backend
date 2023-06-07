@@ -16,6 +16,7 @@ type TransaksiController interface {
 	GetTransaksi(ctx *gin.Context)
 	DeleteTransaksi(ctx *gin.Context)
 	UpdateTransaksi(ctx *gin.Context)
+	KembaliMobilTransaksi(ctx *gin.Context)
 }
 
 type transaksiController struct {
@@ -103,5 +104,19 @@ func (lc *transaksiController) UpdateTransaksi(ctx *gin.Context) {
 		return
 	}
 	res := common.BuildResponse(true, "Berhasil Mengupdate Transaksi", common.EmptyObj{})
+	ctx.JSON(http.StatusOK, res)
+}
+
+func (lc *transaksiController) KembaliMobilTransaksi(ctx *gin.Context) {
+	transaksiId, err := uuid.Parse(ctx.Param("id"))
+	err = lc.transaksiService.KembaliMobilTransaksi(ctx.Request.Context(), transaksiId)
+
+	if err != nil {
+		res := common.BuildErrorResponse("Gagal Mengembalikan Mobil", err.Error(), common.EmptyObj{})
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	res := common.BuildResponse(true, "Berhasil Mengembalikan Mobil", common.EmptyObj{})
 	ctx.JSON(http.StatusOK, res)
 }

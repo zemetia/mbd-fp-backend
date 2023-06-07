@@ -16,6 +16,7 @@ type TransaksiService interface {
 	GetTransaksi(ctx context.Context, transaksiID uuid.UUID) (entity.Transaksi, error)
 	DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error
 	UpdateTransaksi(ctx context.Context, transaksiDTO dto.TransaksiUpdateDto) error
+	KembaliMobilTransaksi(ctx context.Context, transaksiID uuid.UUID) error
 }
 
 type transaksiService struct {
@@ -47,6 +48,10 @@ func (us *transaksiService) GetTransaksi(ctx context.Context, transaksiID uuid.U
 
 func (us *transaksiService) DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error {
 	return us.transaksiRepository.DeleteTransaksi(ctx, transaksiID)
+}
+
+func (us *transaksiService) KembaliMobilTransaksi(ctx context.Context, transaksiID uuid.UUID) error {
+	return us.transaksiRepository.UpdateMobilKembali(ctx, transaksiID)
 }
 
 func (us *transaksiService) UpdateTransaksi(ctx context.Context, transaksiDTO dto.TransaksiUpdateDto) error {
