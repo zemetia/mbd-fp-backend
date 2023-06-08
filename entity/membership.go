@@ -1,6 +1,8 @@
 package entity
 
 type Membership struct {
-	Tier   string `gorm:"size:16;primaryKey;not null"`
-	Diskon int    `gorm:"not null"`
+	Tier   string `json:"tier" gorm:"size:16;primary_key;not_null"`
+	Diskon int    `json:"diskon" gorm:"not null"`
+
+	User []User `gorm:"foreignKey:MembershipTier"`
 }

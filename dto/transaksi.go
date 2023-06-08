@@ -7,7 +7,7 @@ import (
 )
 
 type TransaksiCreateDto struct {
-	ID                 uuid.UUID `gorm:"type:uuid;primaryKey;not null"`
+	ID                 uuid.UUID `gorm:"primary_key;not_null"`
 	TglAmbil           time.Time `json:"tgl_ambil" form:"tgl_ambil" binding:"required"`
 	TglKembali         time.Time `json:"tgl_kembali" form:"tgl_kembali" binding:"required"`
 	Diskon             float32   `json:"diskon" form:"diskon" binding:"required"`
@@ -18,7 +18,7 @@ type TransaksiCreateDto struct {
 }
 
 type TransaksiUpdateDto struct {
-	ID                 uuid.UUID `gorm:"type:uuid;primaryKey;not null"`
+	ID                 uuid.UUID `gorm:"primary_key;not_null"`
 	TglAmbil           time.Time `json:"tgl_ambil" form:"tgl_ambil" binding:"required"`
 	TglKembali         time.Time `json:"tgl_kembali" form:"tgl_kembali" binding:"required"`
 	Diskon             float32   `json:"diskon" form:"diskon" binding:"required"`

@@ -43,6 +43,14 @@ func main() {
 		membershipRepository repository.MembershipRepository = repository.NewMembershipRepository(db)
 		membershipService    service.MembershipService       = service.NewMembershipService(membershipRepository)
 		membershipController controller.MembershipController = controller.NewMembershipController(membershipService, jwtService)
+
+		metodePembayaranRepository repository.MetodePembayaranRepository = repository.NewMetodePembayaranRepository(db)
+		metodePembayaranService    service.MetodePembayaranService       = service.NewMetodePembayaranService(metodePembayaranRepository)
+		metodePembayaranController controller.MetodePembayaranController = controller.NewMetodePembayaranController(metodePembayaranService, jwtService)
+
+		transaksiRepository repository.TransaksiRepository = repository.NewTransaksiRepository(db)
+		transaksiService    service.TransaksiService       = service.NewTransaksiService(transaksiRepository)
+		transaksiController controller.TransaksiController = controller.NewTransaksiController(transaksiService, jwtService)
 	)
 
 	server := gin.Default()
@@ -50,6 +58,8 @@ func main() {
 	routes.LokasiRoutes(server, lokasiController, userService, jwtService)
 	routes.MobilRoutes(server, mobilController, jwtService)
 	routes.MembershipRoutes(server, membershipController, jwtService)
+	routes.MetodePembayaranRoutes(server, metodePembayaranController, jwtService)
+	routes.TransaksiRoutes(server, transaksiController, jwtService)
 
 	port := os.Getenv("PORT")
 	if port == "" {

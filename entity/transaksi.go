@@ -7,17 +7,19 @@ import (
 )
 
 type Transaksi struct {
-	ID                 uuid.UUID `gorm:"type:uuid;primaryKey;not null"`
-	TglAmbil           time.Time `gorm:"not null"`
-	TglKembali         time.Time `gorm:"not null"`
-	TglDikembalikan    time.Time `gorm:"not null"`
-	Diskon             float32   `gorm:"not null"`
-	TotalHarga         float32   `gorm:"not null"`
-	MobilID            uuid.UUID `gorm:"type:uuid;not null"`
-	PelangganID        uuid.UUID `gorm:"type:uuid;not null"`
-	LokasiID           uuid.UUID `gorm:"type:uuid;not null"`
-	MetodePembayaranID uuid.UUID `gorm:"type:uuid;not null"`
-	DendaID            uuid.UUID `gorm:"type:uuid"`
+	ID                 uuid.UUID `json:"id" gorm:"primary_key;not_null"`
+	TglAmbil           time.Time `json:"tgl_ambil" gorm:"not null"`
+	TglKembali         time.Time `json:"tgl_kembali" gorm:"not null"`
+	TglDikembalikan    time.Time `json:"tgl_dikembalikan" gorm:"not null"`
+	Diskon             float32   `json:"diskon" gorm:"not null"`
+	TotalHarga         float32   `json:"total_harga" gorm:"not null"`
+	MobilID            uuid.UUID `json:"mobil_id" gorm:"not null"`
+	PelangganID        uuid.UUID `json:"pelanggan_id" gorm:"not null"`
+	MetodePembayaranID uuid.UUID `json:"metode_pembayaran_id" gorm:"size:36;not null"`
+	DendaID            uuid.UUID `json:"denda_id"`
+
+	LokasiID uuid.UUID `json:"lokasi_id" gorm:"size:36"`
+	Lokasi   Lokasi    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 
 	Timestamp
 }

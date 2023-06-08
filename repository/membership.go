@@ -67,7 +67,7 @@ func (db *membershipConnection) GetMembershipByUserId(ctx context.Context, userI
 	if mk.Error != nil {
 		return membership, mk.Error
 	}
-	mk = db.connection.Where("tier = ?", user.Membership).Take(&membership)
+	mk = db.connection.Where("tier = ?", user.MembershipTier).Take(&membership)
 	if mk.Error != nil {
 		return membership, mk.Error
 	}

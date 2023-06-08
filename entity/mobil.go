@@ -5,17 +5,18 @@ import (
 )
 
 type Mobil struct {
-	ID             uuid.UUID `gorm:"type:uuid;primaryKey;not null"`
-	Nama           string    `gorm:"size:20;not null"`
-	Price          float32   `gorm:"not null"`
-	PelatNo        string    `gorm:"size:10;not null"`
-	Status         bool      `gorm:"default:true"`
-	KapasitasMesin string    `gorm:"not null"`
+	ID             uuid.UUID `json:"id" gorm:"primary_key;not_null"`
+	Nama           string    `json:"nama" gorm:"size:20;not null"`
+	Price          float32   `json:"price" gorm:"not null"`
+	PelatNo        string    `json:"pelat_no" gorm:"size:10;not null"`
+	Status         bool      `json:"status" gorm:"default:true"`
+	KapasitasMesin string    `json:"kapasitas_mesin" gorm:"not null"`
 
-	MitraID          uuid.UUID `gorm:"type:uuid;not null"`
-	TipeMobilID      uint      `gorm:"not null"`
-	TipePersnelingID uint      `gorm:"not null"`
-	TipeMesinID      uint      `gorm:"not null"`
+	MitraID          uuid.UUID `json:"mitra_id" gorm:"not null"`
+	TipeMobilID      uint      `json:"tipe_mobil_id" gorm:"not null"`
+	TipePersnelingID uint      `json:"tipe_persneling_id" gorm:"not null"`
+	TipeMesinID      uint      `json:"tipe_mesin_id" gorm:"not null"`
 
-	Lokasi Lokasi
+	LokasiID uuid.UUID `json:"lokasi_id" gorm:"size:36"`
+	Lokasi   Lokasi    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }

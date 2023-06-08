@@ -10,5 +10,8 @@ type Lokasi struct {
 	Longtitude string    `gorm:"not_null" json:"longtitude"`
 	Latitude   string    `gorm:"not_null" json:"latitude"`
 
+	Mobil     []Mobil
+	Transaksi []Transaksi
+
 	Timestamp
 }
