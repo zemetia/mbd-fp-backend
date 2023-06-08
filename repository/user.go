@@ -39,6 +39,7 @@ func (db *userConnection) RegisterUser(ctx context.Context, user entity.User) (e
 func (db *userConnection) GetAllUser(ctx context.Context) ([]entity.User, error) {
 	var listUser []entity.User
 	tx := db.connection.Find(&listUser)
+	// tx := db.connection.Raw("SELECT * FROM `ayam_geprek`").Scan(&listUser)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
