@@ -12,11 +12,13 @@ type Mobil struct {
 	Status         bool      `json:"status" gorm:"default:true"`
 	KapasitasMesin string    `json:"kapasitas_mesin" gorm:"not null"`
 
-	MitraID          uuid.UUID `json:"mitra_id" gorm:"not null"`
-	TipeMobilID      uint      `json:"tipe_mobil_id" gorm:"not null"`
-	TipePersnelingID uint      `json:"tipe_persneling_id" gorm:"not null"`
-	TipeMesinID      uint      `json:"tipe_mesin_id" gorm:"not null"`
+	UserID           uuid.UUID `json:"user_id" gorm:"size:36"`
+	TipeMobilID      uint8     `json:"tipe_mobil_id"`
+	TipePersnelingID uint8     `json:"tipe_persneling_id"`
+	TipeMesinID      uint8     `json:"tipe_mesin_id"`
 
-	LokasiID uuid.UUID `json:"lokasi_id" gorm:"size:36"`
+	LokasiID uuid.UUID `json:"lokasi_id" gorm:"size:36;not null"`
 	Lokasi   Lokasi    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+
+	ReviewMobil []ReviewMobil
 }

@@ -5,10 +5,10 @@ import (
 )
 
 type ReviewMobil struct {
-	ID      uint      `json:"id" gorm:"primaryKey;autoIncrement"`
+	ID      uuid.UUID `json:"id" gorm:"primaryKey;not_null"`
 	Review  string    `json:"review" gorm:"not null"`
 	Rating  uint16    `json:"rating" gorm:"not null"`
-	MobilID uuid.UUID `json:"mobil_id" gorm:"not null"`
-
+	MobilID uuid.UUID `json:"mobil_id" gorm:"not null;size:36"`
+	UserID  uuid.UUID `json:"user_id" gorm:"not null;size:36"`
 	Timestamp
 }
