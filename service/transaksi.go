@@ -21,17 +21,35 @@ type TransaksiService interface {
 
 type transaksiService struct {
 	transaksiRepository repository.TransaksiRepository
+	mobilRepository     repository.MobilRepository
+	userRepository      repository.UserRepository
 }
 
-func NewTransaksiService(ur repository.TransaksiRepository) TransaksiService {
+func NewTransaksiService(tr repository.TransaksiRepository, mr repository.MobilRepository, ur repository.UserRepository) TransaksiService {
 	return &transaksiService{
-		transaksiRepository: ur,
+		transaksiRepository: tr,
+		mobilRepository:     mr,
+		userRepository:      ur,
 	}
 }
 
 func (us *transaksiService) AddTransaksi(ctx context.Context, transaksiDTO dto.TransaksiCreateDto) (entity.Transaksi, error) {
 	transaksi := entity.Transaksi{}
 	err := smapping.FillStruct(&transaksi, smapping.MapFields(transaksiDTO))
+
+	if err != nil {
+		return transaksi, err
+	}
+
+	mobil, err := us.mobilRepository.FindMobilByID(ctx, transaksi.MobilID)
+
+	if err != nil {
+		return transaksi, err
+	}
+
+	timediff := float32(transaksi.TglAmbil.Sub(transaksi.TglKembali)/24 + 1)
+	transaksi.TotalHarga = timediff * mobil.Price
+
 	if err != nil {
 		return transaksi, err
 	}

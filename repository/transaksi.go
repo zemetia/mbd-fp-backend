@@ -30,6 +30,7 @@ func NewTransaksiRepository(db *gorm.DB) TransaksiRepository {
 
 func (db *transaksiConnection) AddTransaksi(ctx context.Context, transaksi entity.Transaksi) (entity.Transaksi, error) {
 	transaksi.ID = uuid.New()
+
 	uc := db.connection.Create(&transaksi)
 	if uc.Error != nil {
 		return entity.Transaksi{}, uc.Error

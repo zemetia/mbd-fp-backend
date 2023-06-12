@@ -17,6 +17,7 @@ type MobilCreateDto struct {
 	TipePersnelingID uint      `json:"tipe_persneling_id" form:"tipe_persneling_id" binding:"required"`
 	TipeMesinID      uint      `json:"tipe_mesin_id" form:"tipe_mesin_id" binding:"required"`
 	LokasiID         uuid.UUID `json:"lokasi_id" form:"lokasi_id" binding:"required"`
+	Rating           float32   `json:"rating" form:"rating" binding:"required"`
 }
 
 type MobilUpdateDto struct {
@@ -32,4 +33,5 @@ type MobilUpdateDto struct {
 	TipePersnelingID uint      `json:"tipe_persneling_id" form:"tipe_persneling_id" binding:"required"`
 	TipeMesinID      uint      `json:"tipe_mesin_id" form:"tipe_mesin_id" binding:"required"`
 	LokasiID         uuid.UUID `json:"lokasi_id" form:"lokasi_id" binding:"required"`
+	Rating           float32   `json:"rating" form:"rating" binding:"required"`
 }

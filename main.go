@@ -49,7 +49,7 @@ func main() {
 		metodePembayaranController controller.MetodePembayaranController = controller.NewMetodePembayaranController(metodePembayaranService, jwtService)
 
 		transaksiRepository repository.TransaksiRepository = repository.NewTransaksiRepository(db)
-		transaksiService    service.TransaksiService       = service.NewTransaksiService(transaksiRepository)
+		transaksiService    service.TransaksiService       = service.NewTransaksiService(transaksiRepository, mobilRepository, userRepository)
 		transaksiController controller.TransaksiController = controller.NewTransaksiController(transaksiService, jwtService)
 	)
 

@@ -27,7 +27,6 @@ func NewMetodePembayaranRepository(db *gorm.DB) MetodePembayaranRepository {
 }
 
 func (db *metodePembayaranConnection) AddMetodePembayaran(ctx context.Context, metodePembayaran entity.MetodePembayaran) (entity.MetodePembayaran, error) {
-	metodePembayaran.ID = uuid.New()
 	uc := db.connection.Create(&metodePembayaran)
 	if uc.Error != nil {
 		return entity.MetodePembayaran{}, uc.Error
