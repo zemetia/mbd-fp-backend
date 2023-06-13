@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
@@ -54,6 +55,7 @@ func main() {
 	)
 
 	server := gin.Default()
+	server.Use(cors.Default())
 	routes.UserRoutes(server, userController, jwtService)
 	routes.LokasiRoutes(server, lokasiController, userService, jwtService)
 	routes.MobilRoutes(server, mobilController, jwtService)
