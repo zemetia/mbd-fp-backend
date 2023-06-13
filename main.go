@@ -4,13 +4,13 @@ import (
 	"fp-mbd-amidrive/common"
 	"fp-mbd-amidrive/config"
 	"fp-mbd-amidrive/controller"
+	"fp-mbd-amidrive/middleware"
 	"fp-mbd-amidrive/repository"
 	"fp-mbd-amidrive/routes"
 	"fp-mbd-amidrive/service"
 	"net/http"
 	"os"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
@@ -55,7 +55,7 @@ func main() {
 	)
 
 	server := gin.Default()
-	server.Use(cors.Default())
+	server.Use(middleware.CORSMiddleware())
 	routes.UserRoutes(server, userController, jwtService)
 	routes.LokasiRoutes(server, lokasiController, userService, jwtService)
 	routes.MobilRoutes(server, mobilController, jwtService)
