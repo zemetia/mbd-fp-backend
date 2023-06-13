@@ -5,15 +5,15 @@ import (
 	"fp-mbd-amidrive/dto"
 	"fp-mbd-amidrive/service"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type MetodePembayaranController interface {
 	AddMetodePembayaran(ctx *gin.Context)
 	GetAllMetodePembayaran(ctx *gin.Context)
-	GetMetodePembayaran(ctx *gin.Context)
+	GetMetodePembayaranByID(ctx *gin.Context)
 	DeleteMetodePembayaran(ctx *gin.Context)
 	UpdateMetodePembayaran(ctx *gin.Context)
 }
@@ -57,10 +57,10 @@ func (lc *metodePembayaranController) GetAllMetodePembayaran(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-func (lc *metodePembayaranController) GetMetodePembayaran(ctx *gin.Context) {
-	metodePembayaranID, err := uuid.Parse(ctx.Param("id"))
+func (lc *metodePembayaranController) GetMetodePembayaranByID(ctx *gin.Context) {
+	metodePembayaranID, err := strconv.ParseUint(ctx.Param("id"), 10, 8)
 
-	result, err := lc.metodePembayaranService.GetMetodePembayaran(ctx.Request.Context(), metodePembayaranID)
+	result, err := lc.metodePembayaranService.GetMetodePembayaranByID(ctx.Request.Context(), uint8(metodePembayaranID))
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Mendapatkan List MetodePembayaran", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
@@ -72,10 +72,8 @@ func (lc *metodePembayaranController) GetMetodePembayaran(ctx *gin.Context) {
 }
 
 func (lc *metodePembayaranController) DeleteMetodePembayaran(ctx *gin.Context) {
-	metodePembayaranID, err := uuid.Parse(ctx.Param("id"))
-	// ctx.Set("token", "")
-	// ctx.Set("metodePembayaranID", "")
-	err = lc.metodePembayaranService.DeleteMetodePembayaran(ctx.Request.Context(), metodePembayaranID)
+	metodePembayaranID, err := strconv.ParseUint(ctx.Param("id"), 10, 8)
+	err = lc.metodePembayaranService.DeleteMetodePembayaran(ctx.Request.Context(), uint8(metodePembayaranID))
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Menghapus MetodePembayaran", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
@@ -94,8 +92,8 @@ func (lc *metodePembayaranController) UpdateMetodePembayaran(ctx *gin.Context) {
 		return
 	}
 
-	metodePembayaranID, err := uuid.Parse(ctx.Param("id"))
-	metodePembayaran.ID = metodePembayaranID
+	metodePembayaranID, err := strconv.ParseUint(ctx.Param("id"), 10, 8)
+	metodePembayaran.ID = uint8(metodePembayaranID)
 	err = lc.metodePembayaranService.UpdateMetodePembayaran(ctx.Request.Context(), metodePembayaran)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Mengupdate MetodePembayaran", err.Error(), common.EmptyObj{})

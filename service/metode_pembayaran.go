@@ -6,15 +6,14 @@ import (
 	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
 type MetodePembayaranService interface {
 	AddMetodePembayaran(ctx context.Context, metodePembayaranDTO dto.MetodePembayaranCreateDto) (entity.MetodePembayaran, error)
 	GetAllMetodePembayaran(ctx context.Context) ([]entity.MetodePembayaran, error)
-	GetMetodePembayaran(ctx context.Context, metodePembayaranID uuid.UUID) (entity.MetodePembayaran, error)
-	DeleteMetodePembayaran(ctx context.Context, metodePembayaranID uuid.UUID) error
+	GetMetodePembayaranByID(ctx context.Context, metodePembayaranID uint8) (entity.MetodePembayaran, error)
+	DeleteMetodePembayaran(ctx context.Context, metodePembayaranID uint8) error
 	UpdateMetodePembayaran(ctx context.Context, metodePembayaranDTO dto.MetodePembayaranUpdateDto) error
 }
 
@@ -41,11 +40,11 @@ func (us *metodePembayaranService) GetAllMetodePembayaran(ctx context.Context) (
 	return us.metodePembayaranRepository.GetAllMetodePembayaran(ctx)
 }
 
-func (us *metodePembayaranService) GetMetodePembayaran(ctx context.Context, metodePembayaranID uuid.UUID) (entity.MetodePembayaran, error) {
-	return us.metodePembayaranRepository.FindMetodePembayaranByID(ctx, metodePembayaranID)
+func (us *metodePembayaranService) GetMetodePembayaranByID(ctx context.Context, metodePembayaranID uint8) (entity.MetodePembayaran, error) {
+	return us.metodePembayaranRepository.GetMetodePembayaranByID(ctx, metodePembayaranID)
 }
 
-func (us *metodePembayaranService) DeleteMetodePembayaran(ctx context.Context, metodePembayaranID uuid.UUID) error {
+func (us *metodePembayaranService) DeleteMetodePembayaran(ctx context.Context, metodePembayaranID uint8) error {
 	return us.metodePembayaranRepository.DeleteMetodePembayaran(ctx, metodePembayaranID)
 }
 

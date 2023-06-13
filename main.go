@@ -62,8 +62,12 @@ func main() {
 	routes.TransaksiRoutes(server, transaksiController, jwtService)
 
 	port := os.Getenv("PORT")
+	ip := os.Getenv("IP")
 	if port == "" {
 		port = "8000"
 	}
-	server.Run("127.0.0.1:" + port)
+	if ip == "" {
+		ip = "localhost"
+	}
+	server.Run(ip + ":" + port)
 }
