@@ -12,6 +12,7 @@ type UserCreateDto struct {
 	NoTelp         string    `json:"no_telp" form:"no_telp" binding:"required"`
 	Password       string    `json:"password" form:"password" binding:"required"`
 	MembershipTier string    `json:"membership" form:"membership" binding:"required"`
+	PhotoURL       string    `json:"photo_url" form:"photo_url"`
 }
 
 type UserUpdateDto struct {
@@ -21,6 +22,7 @@ type UserUpdateDto struct {
 	NoTelp         string    `json:"no_telp" form:"no_telp"`
 	Password       string    `json:"password" form:"password"`
 	MembershipTier string    `json:"membership" form:"membership" binding:"required"`
+	PhotoURL       string    `json:"photo_url" form:"photo_url"`
 }
 
 type UserLoginDto struct {

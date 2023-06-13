@@ -5,9 +5,12 @@ import (
 	"fp-mbd-amidrive/dto"
 	"fp-mbd-amidrive/service"
 	"net/http"
+	"sort"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/umahmood/haversine"
 )
 
 type LokasiController interface {
@@ -52,8 +55,47 @@ func (lc *lokasiController) GetAllLokasi(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
-
-	res := common.BuildResponse(true, "Berhasil Mendapatkan List Lokasi", result)
+	longitude, err := strconv.ParseFloat(ctx.DefaultQuery("lon", "106.8456"), 64)
+	if err != nil {
+		res := common.BuildErrorResponse("Gagal Mendapatkan List Lokasi", err.Error(), common.EmptyObj{})
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	latitude, err := strconv.ParseFloat(ctx.DefaultQuery("lat", "6.2088"), 64)
+	if err != nil {
+		res := common.BuildErrorResponse("Gagal Mendapatkan List Lokasi", err.Error(), common.EmptyObj{})
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	userPos := haversine.Coord{Lat: longitude, Lon: latitude}
+	distLimit, err := strconv.ParseFloat(ctx.DefaultQuery("dist", "99999"), 64)
+	if err != nil {
+		res := common.BuildErrorResponse("Gagal Mendapatkan List Lokasi", err.Error(), common.EmptyObj{})
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	// Get distances of locations
+	var lokasiList []dto.LokasiGetAllDto
+	for _, x := range result {
+		lat, _ := strconv.ParseFloat(x.Latitude, 64)
+		lon, _ := strconv.ParseFloat(x.Longtitude, 64)
+		lokasiPos := haversine.Coord{Lat: lat, Lon: lon}
+		_, km := haversine.Distance(lokasiPos, userPos)
+		if km < distLimit {
+			lokasiList = append(lokasiList, dto.LokasiGetAllDto{
+				ID:         x.ID,
+				Name:       x.Name,
+				Longtitude: x.Longtitude,
+				Latitude:   x.Latitude,
+				Distance:   km,
+			})
+		}
+	}
+	// Sort the locations based on distance
+	sort.Slice(lokasiList, func(i, j int) bool {
+		return lokasiList[i].Distance < lokasiList[j].Distance
+	})
+	res := common.BuildResponse(true, "Berhasil Mendapatkan List Lokasi", lokasiList)
 	ctx.JSON(http.StatusOK, res)
 }
 
@@ -73,8 +115,7 @@ func (lc *lokasiController) GetLokasi(ctx *gin.Context) {
 
 func (lc *lokasiController) DeleteLokasi(ctx *gin.Context) {
 	lokasiID, err := uuid.Parse(ctx.Param("id"))
-	// ctx.Set("token", "")
-	// ctx.Set("lokasiID", "")
+
 	err = lc.lokasiService.DeleteLokasi(ctx.Request.Context(), lokasiID)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Menghapus Lokasi", err.Error(), common.EmptyObj{})

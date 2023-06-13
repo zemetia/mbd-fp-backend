@@ -15,6 +15,7 @@ type User struct {
 	Password       string        `json:"password"`
 	Role           string        `json:"role"`
 	MembershipTier string        `json:"membership"`
+	PhotoURL       string        `json:"photo_url"`
 	ReviewMobil    []ReviewMobil `json:",omitempty"`
 	Mobil          []Mobil       `json:",omitempty"`
 

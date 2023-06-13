@@ -50,10 +50,11 @@ func (us *mobilService) DeleteMobil(ctx context.Context, mobilID uuid.UUID) erro
 }
 
 func (us *mobilService) UpdateMobil(ctx context.Context, mobilDTO dto.MobilUpdateDto) error {
-	mobil := entity.Mobil{}
-	err := smapping.FillStruct(&mobil, smapping.MapFields(mobilDTO))
+	newMobil := entity.Mobil{}
+
+	err := smapping.FillStruct(&newMobil, smapping.MapFields(mobilDTO))
 	if err != nil {
 		return err
 	}
-	return us.mobilRepository.UpdateMobil(ctx, mobil)
+	return us.mobilRepository.UpdateMobil(ctx, newMobil)
 }

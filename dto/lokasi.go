@@ -17,3 +17,11 @@ type LokasiUpdateDto struct {
 	Longtitude string    `json:"longtitude" form:"longtitude"`
 	Latitude   string    `json:"latitude" form:"latitude"`
 }
+
+type LokasiGetAllDto struct {
+	ID         uuid.UUID `json:"id"`
+	Name       string    `json:"name"`
+	Longtitude string    `json:"longtitude"`
+	Latitude   string    `json:"latitude"`
+	Distance   float64   `json:"distance"`
+}
