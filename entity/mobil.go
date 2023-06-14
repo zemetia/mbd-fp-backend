@@ -4,7 +4,7 @@ type Mobil struct {
 	ID                 string  `json:"id" gorm:"primary_key;size:36;not_null"`
 	Nama               string  `json:"nama" gorm:"size:20;not null"`
 	Price              float32 `json:"price" gorm:"not null"`
-	PelatNo            string  `json:"pelat_no" gorm:"size:10;not null"`
+	PelatNo            string  `json:"pelat_no" gorm:"not null"`
 	KapasitasPenumpang uint8   `json:"kapasitas_penumpang" gorm:"not null"`
 	Status             bool    `json:"status" gorm:"default:true"`
 	KapasitasMesin     string  `json:"kapasitas_mesin" gorm:"not null"`

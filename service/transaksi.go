@@ -6,7 +6,6 @@ import (
 	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
@@ -14,9 +13,9 @@ type TransaksiService interface {
 	AddTransaksi(ctx context.Context, transaksiDTO dto.TransaksiCreateDto) (entity.Transaksi, error)
 	GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error)
 	GetTransaksi(ctx context.Context, transaksiID string) (entity.Transaksi, error)
-	DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error
+	DeleteTransaksi(ctx context.Context, transaksiID string) error
 	UpdateTransaksi(ctx context.Context, transaksiDTO dto.TransaksiUpdateDto) error
-	KembaliMobilTransaksi(ctx context.Context, transaksiID uuid.UUID) error
+	KembaliMobilTransaksi(ctx context.Context, transaksiID string) error
 }
 
 type transaksiService struct {
@@ -68,11 +67,11 @@ func (us *transaksiService) GetAllTransaksi(ctx context.Context) ([]entity.Trans
 	return us.transaksiRepository.GetAllTransaksi(ctx)
 }
 
-func (us *transaksiService) GetTransaksi(ctx context.Context, transaksiID uuid.UUID) (entity.Transaksi, error) {
+func (us *transaksiService) GetTransaksi(ctx context.Context, transaksiID string) (entity.Transaksi, error) {
 	return us.transaksiRepository.FindTransaksiByID(ctx, transaksiID)
 }
 
-func (us *transaksiService) DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error {
+func (us *transaksiService) DeleteTransaksi(ctx context.Context, transaksiID string) error {
 	return us.transaksiRepository.DeleteTransaksi(ctx, transaksiID)
 }
 
