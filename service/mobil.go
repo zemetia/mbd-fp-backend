@@ -6,17 +6,16 @@ import (
 	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
 type MobilService interface {
 	AddMobil(ctx context.Context, mobilDTO dto.MobilCreateDto) (entity.Mobil, error)
 	GetAllMobil(ctx context.Context) ([]entity.Mobil, error)
-	GetMobil(ctx context.Context, mobilID uuid.UUID) (entity.Mobil, error)
-	DeleteMobil(ctx context.Context, mobilID uuid.UUID) error
+	GetMobil(ctx context.Context, mobilID string) (entity.Mobil, error)
+	DeleteMobil(ctx context.Context, mobilID string) error
 	UpdateMobil(ctx context.Context, mobilDTO dto.MobilUpdateDto) error
-	GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UUID, lokasiName string, distance float64) ([]dto.MobilGetDto, error)
+	GetMobilByLokasiID(ctx context.Context, lokasiID string, lokasiName string, distance float64) ([]dto.MobilGetDto, error)
 }
 
 type mobilService struct {
@@ -46,11 +45,11 @@ func (us *mobilService) GetAllMobil(ctx context.Context) ([]entity.Mobil, error)
 	return us.mobilRepository.GetAllMobil(ctx)
 }
 
-func (us *mobilService) GetMobil(ctx context.Context, mobilID uuid.UUID) (entity.Mobil, error) {
+func (us *mobilService) GetMobil(ctx context.Context, mobilID string) (entity.Mobil, error) {
 	return us.mobilRepository.FindMobilByID(ctx, mobilID)
 }
 
-func (us *mobilService) GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UUID, lokasiName string, distance float64) ([]dto.MobilGetDto, error) {
+func (us *mobilService) GetMobilByLokasiID(ctx context.Context, lokasiID string, lokasiName string, distance float64) ([]dto.MobilGetDto, error) {
 	mobilList, err := us.mobilRepository.GetMobilByLokasiID(ctx, lokasiID)
 	var result []dto.MobilGetDto
 	if err != nil {
@@ -88,7 +87,7 @@ func (us *mobilService) GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UU
 	return result, nil
 }
 
-func (us *mobilService) DeleteMobil(ctx context.Context, mobilID uuid.UUID) error {
+func (us *mobilService) DeleteMobil(ctx context.Context, mobilID string) error {
 	return us.mobilRepository.DeleteMobil(ctx, mobilID)
 }
 

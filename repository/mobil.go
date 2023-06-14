@@ -11,10 +11,10 @@ import (
 type MobilRepository interface {
 	AddMobil(ctx context.Context, mobil entity.Mobil) (entity.Mobil, error)
 	GetAllMobil(ctx context.Context) ([]entity.Mobil, error)
-	FindMobilByID(ctx context.Context, mobilID uuid.UUID) (entity.Mobil, error)
-	DeleteMobil(ctx context.Context, mobilID uuid.UUID) error
+	FindMobilByID(ctx context.Context, mobilID string) (entity.Mobil, error)
+	DeleteMobil(ctx context.Context, mobilID string) error
 	UpdateMobil(ctx context.Context, mobil entity.Mobil) error
-	GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UUID) ([]entity.Mobil, error)
+	GetMobilByLokasiID(ctx context.Context, lokasiID string) ([]entity.Mobil, error)
 }
 
 type mobilConnection struct {
@@ -28,7 +28,7 @@ func NewMobilRepository(db *gorm.DB) MobilRepository {
 }
 
 func (db *mobilConnection) AddMobil(ctx context.Context, mobil entity.Mobil) (entity.Mobil, error) {
-	mobil.ID = uuid.New()
+	mobil.ID = uuid.New().String()
 	uc := db.connection.Create(&mobil)
 	if uc.Error != nil {
 		return entity.Mobil{}, uc.Error
@@ -45,7 +45,7 @@ func (db *mobilConnection) GetAllMobil(ctx context.Context) ([]entity.Mobil, err
 	return listMobil, nil
 }
 
-func (db *mobilConnection) GetMobil(ctx context.Context, MobilID uuid.UUID) ([]entity.Mobil, error) {
+func (db *mobilConnection) GetMobil(ctx context.Context, MobilID string) ([]entity.Mobil, error) {
 	var listMobil []entity.Mobil
 	tx := db.connection.Find(&listMobil)
 	if tx.Error != nil {
@@ -63,7 +63,7 @@ func (db *mobilConnection) FindMobilByEmail(ctx context.Context, email string) (
 	return mobil, nil
 }
 
-func (db *mobilConnection) FindMobilByID(ctx context.Context, mobilID uuid.UUID) (entity.Mobil, error) {
+func (db *mobilConnection) FindMobilByID(ctx context.Context, mobilID string) (entity.Mobil, error) {
 	var mobil entity.Mobil
 	ux := db.connection.Where("id = ?", mobilID).Take(&mobil)
 	if ux.Error != nil {
@@ -72,7 +72,7 @@ func (db *mobilConnection) FindMobilByID(ctx context.Context, mobilID uuid.UUID)
 	return mobil, nil
 }
 
-func (db *mobilConnection) GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UUID) ([]entity.Mobil, error) {
+func (db *mobilConnection) GetMobilByLokasiID(ctx context.Context, lokasiID string) ([]entity.Mobil, error) {
 	var mobilList []entity.Mobil
 	ux := db.connection.Where("lokasi_id = ?", lokasiID).Find(&mobilList)
 	if ux.Error != nil {
@@ -81,7 +81,7 @@ func (db *mobilConnection) GetMobilByLokasiID(ctx context.Context, lokasiID uuid
 	return mobilList, nil
 }
 
-func (db *mobilConnection) DeleteMobil(ctx context.Context, mobilID uuid.UUID) error {
+func (db *mobilConnection) DeleteMobil(ctx context.Context, mobilID string) error {
 	uc := db.connection.Delete(&entity.Mobil{}, &mobilID)
 	if uc.Error != nil {
 		return uc.Error

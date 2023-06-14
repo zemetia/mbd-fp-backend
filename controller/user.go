@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type UserController interface {
@@ -79,7 +80,8 @@ func (uc *userController) LoginUser(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
-	token := uc.jwtService.GenerateToken(user.ID, user.Role)
+	userID, _ := uuid.Parse(user.ID)
+	token := uc.jwtService.GenerateToken(userID, user.Role)
 	userResponse := entity.Authorization{
 		Token: token,
 		Role:  user.Role,
@@ -99,7 +101,8 @@ func (uc *userController) DeleteUser(ctx *gin.Context) {
 		ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
-	err = uc.userService.DeleteUser(ctx.Request.Context(), userID)
+
+	err = uc.userService.DeleteUser(ctx.Request.Context(), userID.String())
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Menghapus User", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
@@ -126,7 +129,7 @@ func (uc *userController) UpdateUser(ctx *gin.Context) {
 		return
 	}
 
-	user.ID = userID
+	user.ID = userID.String()
 	err = uc.userService.UpdateUser(ctx.Request.Context(), user)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Mengupdate User", err.Error(), common.EmptyObj{})
@@ -146,7 +149,7 @@ func (uc *userController) MeUser(ctx *gin.Context) {
 		return
 	}
 
-	result, err := uc.userService.MeUser(ctx.Request.Context(), userID)
+	result, err := uc.userService.MeUser(ctx.Request.Context(), userID.String())
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Mendapatkan User", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)

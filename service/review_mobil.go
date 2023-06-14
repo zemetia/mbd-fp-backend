@@ -6,17 +6,16 @@ import (
 	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
 type ReviewService interface {
 	AddReview(ctx context.Context, reviewDTO dto.ReviewCreateDto) (entity.ReviewMobil, error)
-	DeleteReview(ctx context.Context, reviewID uuid.UUID) error
+	DeleteReview(ctx context.Context, reviewID string) error
 	UpdateReview(ctx context.Context, reviewDTO dto.ReviewUpdateDto) error
-	GetReviewById(ctx context.Context, reviewID uuid.UUID) (entity.ReviewMobil, error)
-	GetAllMobilReview(ctx context.Context, mobilID uuid.UUID) ([]entity.ReviewMobil, error)
-	GetAllUserReview(ctx context.Context, mobilID uuid.UUID) ([]entity.ReviewMobil, error)
+	GetReviewById(ctx context.Context, reviewID string) (entity.ReviewMobil, error)
+	GetAllMobilReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error)
+	GetAllUserReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error)
 }
 
 type reviewService struct {
@@ -38,19 +37,19 @@ func (rs *reviewService) AddReview(ctx context.Context, reviewDTO dto.ReviewCrea
 	return rs.reviewRepository.AddReview(ctx, review)
 }
 
-func (rs *reviewService) GetReviewById(ctx context.Context, reviewID uuid.UUID) (entity.ReviewMobil, error) {
+func (rs *reviewService) GetReviewById(ctx context.Context, reviewID string) (entity.ReviewMobil, error) {
 	return rs.reviewRepository.GetReviewById(ctx, reviewID)
 }
 
-func (rs *reviewService) GetAllMobilReview(ctx context.Context, mobilID uuid.UUID) ([]entity.ReviewMobil, error) {
+func (rs *reviewService) GetAllMobilReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error) {
 	return rs.reviewRepository.GetAllMobilReview(ctx, mobilID)
 }
 
-func (rs *reviewService) GetAllUserReview(ctx context.Context, mobilID uuid.UUID) ([]entity.ReviewMobil, error) {
+func (rs *reviewService) GetAllUserReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error) {
 	return rs.reviewRepository.GetAllUserReview(ctx, mobilID)
 }
 
-func (rs *reviewService) DeleteReview(ctx context.Context, reviewID uuid.UUID) error {
+func (rs *reviewService) DeleteReview(ctx context.Context, reviewID string) error {
 	return rs.reviewRepository.DeleteReview(ctx, reviewID)
 }
 

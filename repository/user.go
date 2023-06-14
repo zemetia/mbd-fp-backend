@@ -12,8 +12,8 @@ type UserRepository interface {
 	RegisterUser(ctx context.Context, user entity.User) (entity.User, error)
 	GetAllUser(ctx context.Context) ([]entity.User, error)
 	FindUserByEmail(ctx context.Context, email string) (entity.User, error)
-	FindUserByID(ctx context.Context, userID uuid.UUID) (entity.User, error)
-	DeleteUser(ctx context.Context, userID uuid.UUID) error
+	FindUserByID(ctx context.Context, userID string) (entity.User, error)
+	DeleteUser(ctx context.Context, userID string) error
 	UpdateUser(ctx context.Context, user entity.User) error
 }
 
@@ -28,7 +28,7 @@ func NewUserRepository(db *gorm.DB) UserRepository {
 }
 
 func (db *userConnection) RegisterUser(ctx context.Context, user entity.User) (entity.User, error) {
-	user.ID = uuid.New()
+	user.ID = uuid.New().String()
 	uc := db.connection.Create(&user)
 	if uc.Error != nil {
 		return entity.User{}, uc.Error
@@ -55,7 +55,7 @@ func (db *userConnection) FindUserByEmail(ctx context.Context, email string) (en
 	return user, nil
 }
 
-func (db *userConnection) FindUserByID(ctx context.Context, userID uuid.UUID) (entity.User, error) {
+func (db *userConnection) FindUserByID(ctx context.Context, userID string) (entity.User, error) {
 	var user entity.User
 	ux := db.connection.Where("id = ?", userID).Take(&user)
 	if ux.Error != nil {
@@ -64,7 +64,7 @@ func (db *userConnection) FindUserByID(ctx context.Context, userID uuid.UUID) (e
 	return user, nil
 }
 
-func (db *userConnection) DeleteUser(ctx context.Context, userID uuid.UUID) error {
+func (db *userConnection) DeleteUser(ctx context.Context, userID string) error {
 	uc := db.connection.Delete(&entity.User{}, &userID)
 	if uc.Error != nil {
 		return uc.Error

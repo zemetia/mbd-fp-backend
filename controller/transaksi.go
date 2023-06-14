@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type TransaksiController interface {
@@ -59,7 +58,7 @@ func (lc *transaksiController) GetAllTransaksi(ctx *gin.Context) {
 }
 
 func (lc *transaksiController) GetTransaksi(ctx *gin.Context) {
-	transaksiID, err := uuid.Parse(ctx.Param("id"))
+	transaksiID := ctx.Param("id")
 
 	result, err := lc.transaksiService.GetTransaksi(ctx.Request.Context(), transaksiID)
 	if err != nil {
@@ -73,17 +72,17 @@ func (lc *transaksiController) GetTransaksi(ctx *gin.Context) {
 }
 
 func (lc *transaksiController) DeleteTransaksi(ctx *gin.Context) {
-	transaksiID, err := uuid.Parse(ctx.Param("id"))
+	// transaksiID := ctx.Param("id")
 	// ctx.Set("token", "")
 	// ctx.Set("transaksiID", "")
-	err = lc.transaksiService.DeleteTransaksi(ctx.Request.Context(), transaksiID)
-	if err != nil {
-		res := common.BuildErrorResponse("Gagal Menghapus Transaksi", err.Error(), common.EmptyObj{})
-		ctx.JSON(http.StatusBadRequest, res)
-		return
-	}
-	res := common.BuildResponse(true, "Berhasil Menghapus Transaksi", common.EmptyObj{})
-	ctx.JSON(http.StatusOK, res)
+	// err := lc.transaksiService.DeleteTransaksi(ctx.Request.Context(), transaksiID)
+	// if err != nil {
+	// 	res := common.BuildErrorResponse("Gagal Menghapus Transaksi", err.Error(), common.EmptyObj{})
+	// 	ctx.JSON(http.StatusBadRequest, res)
+	// 	return
+	// }
+	// res := common.BuildResponse(true, "Berhasil Menghapus Transaksi", common.EmptyObj{})
+	// ctx.JSON(http.StatusOK, res)
 }
 
 func (lc *transaksiController) UpdateTransaksi(ctx *gin.Context) {
@@ -95,7 +94,7 @@ func (lc *transaksiController) UpdateTransaksi(ctx *gin.Context) {
 		return
 	}
 
-	transaksiID, err := uuid.Parse(ctx.Param("id"))
+	transaksiID := ctx.Param("id")
 	transaksi.ID = transaksiID
 	err = lc.transaksiService.UpdateTransaksi(ctx.Request.Context(), transaksi)
 	if err != nil {
@@ -108,15 +107,15 @@ func (lc *transaksiController) UpdateTransaksi(ctx *gin.Context) {
 }
 
 func (lc *transaksiController) KembaliMobilTransaksi(ctx *gin.Context) {
-	transaksiId, err := uuid.Parse(ctx.Param("id"))
-	err = lc.transaksiService.KembaliMobilTransaksi(ctx.Request.Context(), transaksiId)
+	// transaksiID := ctx.Param("id")
+	// err := lc.transaksiService.KembaliMobilTransaksi(ctx.Request.Context(), transaksiID)
 
-	if err != nil {
-		res := common.BuildErrorResponse("Gagal Mengembalikan Mobil", err.Error(), common.EmptyObj{})
-		ctx.JSON(http.StatusBadRequest, res)
-		return
-	}
+	// if err != nil {
+	// 	res := common.BuildErrorResponse("Gagal Mengembalikan Mobil", err.Error(), common.EmptyObj{})
+	// 	ctx.JSON(http.StatusBadRequest, res)
+	// 	return
+	// }
 
-	res := common.BuildResponse(true, "Berhasil Mengembalikan Mobil", common.EmptyObj{})
-	ctx.JSON(http.StatusOK, res)
+	// res := common.BuildResponse(true, "Berhasil Mengembalikan Mobil", common.EmptyObj{})
+	// ctx.JSON(http.StatusOK, res)
 }

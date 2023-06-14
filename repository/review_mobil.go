@@ -4,17 +4,16 @@ import (
 	"context"
 	"fp-mbd-amidrive/entity"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type ReviewRepository interface {
 	AddReview(ctx context.Context, review entity.ReviewMobil) (entity.ReviewMobil, error)
 	UpdateReview(ctx context.Context, review entity.ReviewMobil) error
-	DeleteReview(ctx context.Context, reviewID uuid.UUID) error
-	GetReviewById(ctx context.Context, reviewID uuid.UUID) (entity.ReviewMobil, error)
-	GetAllMobilReview(ctx context.Context, mobilID uuid.UUID) ([]entity.ReviewMobil, error)
-	GetAllUserReview(ctx context.Context, userID uuid.UUID) ([]entity.ReviewMobil, error)
+	DeleteReview(ctx context.Context, reviewID string) error
+	GetReviewById(ctx context.Context, reviewID string) (entity.ReviewMobil, error)
+	GetAllMobilReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error)
+	GetAllUserReview(ctx context.Context, userID string) ([]entity.ReviewMobil, error)
 }
 
 type reviewConnection struct {
@@ -43,7 +42,7 @@ func (db *reviewConnection) UpdateReview(ctx context.Context, review entity.Revi
 	return nil
 }
 
-func (db *reviewConnection) DeleteReview(ctx context.Context, reviewID uuid.UUID) error {
+func (db *reviewConnection) DeleteReview(ctx context.Context, reviewID string) error {
 	mk := db.connection.Delete(&entity.Membership{}, &reviewID)
 	if mk.Error != nil {
 		return mk.Error
@@ -51,7 +50,7 @@ func (db *reviewConnection) DeleteReview(ctx context.Context, reviewID uuid.UUID
 	return nil
 }
 
-func (db *reviewConnection) GetReviewById(ctx context.Context, reviewID uuid.UUID) (entity.ReviewMobil, error) {
+func (db *reviewConnection) GetReviewById(ctx context.Context, reviewID string) (entity.ReviewMobil, error) {
 	var review entity.ReviewMobil
 	mk := db.connection.Where("id = ?", reviewID).Take(&review)
 	if mk.Error != nil {
@@ -60,7 +59,7 @@ func (db *reviewConnection) GetReviewById(ctx context.Context, reviewID uuid.UUI
 	return review, nil
 }
 
-func (db *reviewConnection) GetAllMobilReview(ctx context.Context, mobilID uuid.UUID) ([]entity.ReviewMobil, error) {
+func (db *reviewConnection) GetAllMobilReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error) {
 	var listReview []entity.ReviewMobil
 	mk := db.connection.Where("mobil_id = ?", mobilID).Find(&listReview)
 	if mk.Error != nil {
@@ -69,7 +68,7 @@ func (db *reviewConnection) GetAllMobilReview(ctx context.Context, mobilID uuid.
 	return listReview, nil
 }
 
-func (db *reviewConnection) GetAllUserReview(ctx context.Context, userID uuid.UUID) ([]entity.ReviewMobil, error) {
+func (db *reviewConnection) GetAllUserReview(ctx context.Context, userID string) ([]entity.ReviewMobil, error) {
 	var review []entity.ReviewMobil
 	mk := db.connection.Where("user_id = ?", userID).Take(&review)
 	if mk.Error != nil {

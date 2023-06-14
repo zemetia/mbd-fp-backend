@@ -4,7 +4,6 @@ import (
 	"context"
 	"fp-mbd-amidrive/entity"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -13,7 +12,7 @@ type MembershipRepository interface {
 	AddMembership(ctx context.Context, membership entity.Membership) (entity.Membership, error)
 	UpdateMembership(ctx context.Context, membership entity.Membership) error
 	DeleteMembership(ctx context.Context, membershipID string) error
-	GetMembershipByUserId(ctx context.Context, userID uuid.UUID) (entity.Membership, error)
+	GetMembershipByUserId(ctx context.Context, userID string) (entity.Membership, error)
 	GetMembershipById(ctx context.Context, membershipID string) (entity.Membership, error)
 }
 
@@ -60,7 +59,7 @@ func (db *membershipConnection) DeleteMembership(ctx context.Context, membership
 	return nil
 }
 
-func (db *membershipConnection) GetMembershipByUserId(ctx context.Context, userID uuid.UUID) (entity.Membership, error) {
+func (db *membershipConnection) GetMembershipByUserId(ctx context.Context, userID string) (entity.Membership, error) {
 	var user entity.User
 	var membership entity.Membership
 	mk := db.connection.Where("id = ?", userID).Take(&user)

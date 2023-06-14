@@ -6,7 +6,6 @@ import (
 	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
@@ -15,7 +14,7 @@ type MembershipService interface {
 	AddMembership(ctx context.Context, membershipDTO dto.MembershipCreateDto) (entity.Membership, error)
 	UpdateMembership(ctx context.Context, membershipDTO dto.MembershipUpdateDto) error
 	DeleteMembership(ctx context.Context, membershipID string) error
-	GetMembershipByUserId(ctx context.Context, userID uuid.UUID) (entity.Membership, error)
+	GetMembershipByUserId(ctx context.Context, userID string) (entity.Membership, error)
 	GetMembershipById(ctx context.Context, membershipID string) (entity.Membership, error)
 }
 
@@ -55,7 +54,7 @@ func (ur *membershipService) DeleteMembership(ctx context.Context, membershipID 
 	return ur.membershipRepository.DeleteMembership(ctx, membershipID)
 }
 
-func (ur *membershipService) GetMembershipByUserId(ctx context.Context, userID uuid.UUID) (entity.Membership, error) {
+func (ur *membershipService) GetMembershipByUserId(ctx context.Context, userID string) (entity.Membership, error) {
 	return ur.membershipRepository.GetMembershipByUserId(ctx, userID)
 }
 

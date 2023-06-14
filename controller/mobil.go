@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type MobilController interface {
@@ -59,7 +58,7 @@ func (lc *mobilController) GetAllMobil(ctx *gin.Context) {
 }
 
 func (lc *mobilController) GetMobil(ctx *gin.Context) {
-	mobilID, err := uuid.Parse(ctx.Param("id"))
+	mobilID := ctx.Param("id")
 
 	result, err := lc.mobilService.GetMobil(ctx.Request.Context(), mobilID)
 	if err != nil {
@@ -73,10 +72,10 @@ func (lc *mobilController) GetMobil(ctx *gin.Context) {
 }
 
 func (lc *mobilController) DeleteMobil(ctx *gin.Context) {
-	mobilID, err := uuid.Parse(ctx.Param("id"))
+	mobilID := ctx.Param("id")
 	// ctx.Set("token", "")
 	// ctx.Set("mobilID", "")
-	err = lc.mobilService.DeleteMobil(ctx.Request.Context(), mobilID)
+	err := lc.mobilService.DeleteMobil(ctx.Request.Context(), mobilID)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Menghapus Mobil", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
@@ -95,7 +94,7 @@ func (lc *mobilController) UpdateMobil(ctx *gin.Context) {
 		return
 	}
 
-	mobilID, err := uuid.Parse(ctx.Param("id"))
+	mobilID := ctx.Param("id")
 	mobil.ID = mobilID
 	err = lc.mobilService.UpdateMobil(ctx.Request.Context(), mobil)
 	if err != nil {

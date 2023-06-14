@@ -3,12 +3,11 @@ package entity
 import (
 	"fp-mbd-amidrive/helpers"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type User struct {
-	ID             uuid.UUID     `gorm:"primary_key;size:36;not_null" json:"id"`
+	ID             string        `gorm:"primary_key;size:36;not_null" json:"id"`
 	Name           string        `json:"name"`
 	Email          string        `json:"email" binding:"email"`
 	NoTelp         string        `json:"no_telp"`

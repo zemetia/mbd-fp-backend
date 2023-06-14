@@ -13,7 +13,7 @@ import (
 type TransaksiService interface {
 	AddTransaksi(ctx context.Context, transaksiDTO dto.TransaksiCreateDto) (entity.Transaksi, error)
 	GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error)
-	GetTransaksi(ctx context.Context, transaksiID uuid.UUID) (entity.Transaksi, error)
+	GetTransaksi(ctx context.Context, transaksiID string) (entity.Transaksi, error)
 	DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error
 	UpdateTransaksi(ctx context.Context, transaksiDTO dto.TransaksiUpdateDto) error
 	KembaliMobilTransaksi(ctx context.Context, transaksiID uuid.UUID) error
@@ -76,7 +76,7 @@ func (us *transaksiService) DeleteTransaksi(ctx context.Context, transaksiID uui
 	return us.transaksiRepository.DeleteTransaksi(ctx, transaksiID)
 }
 
-func (us *transaksiService) KembaliMobilTransaksi(ctx context.Context, transaksiID uuid.UUID) error {
+func (us *transaksiService) KembaliMobilTransaksi(ctx context.Context, transaksiID string) error {
 	return us.transaksiRepository.UpdateMobilKembali(ctx, transaksiID)
 }
 

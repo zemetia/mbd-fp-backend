@@ -7,13 +7,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 func Role(userService service.UserService, role []string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		userID, _ := ctx.Get("userID")
-		user, err := userService.FindUserByID(ctx.Request.Context(), userID.(uuid.UUID))
+		user, err := userService.FindUserByID(ctx.Request.Context(), userID.(string))
 
 		if err != nil {
 			response := common.BuildErrorResponse("Gagal Mendapatkan User", "Token Tidak Valid", nil)

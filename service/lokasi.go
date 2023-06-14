@@ -6,15 +6,14 @@ import (
 	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
 type LokasiService interface {
 	AddLokasi(ctx context.Context, lokasiDTO dto.LokasiCreateDto) (entity.Lokasi, error)
 	GetAllLokasi(ctx context.Context) ([]entity.Lokasi, error)
-	GetLokasi(ctx context.Context, lokasiID uuid.UUID) (entity.Lokasi, error)
-	DeleteLokasi(ctx context.Context, lokasiID uuid.UUID) error
+	GetLokasi(ctx context.Context, lokasiID string) (entity.Lokasi, error)
+	DeleteLokasi(ctx context.Context, lokasiID string) error
 	UpdateLokasi(ctx context.Context, lokasiDTO dto.LokasiUpdateDto) error
 }
 
@@ -41,11 +40,11 @@ func (us *lokasiService) GetAllLokasi(ctx context.Context) ([]entity.Lokasi, err
 	return us.lokasiRepository.GetAllLokasi(ctx)
 }
 
-func (us *lokasiService) GetLokasi(ctx context.Context, lokasiID uuid.UUID) (entity.Lokasi, error) {
+func (us *lokasiService) GetLokasi(ctx context.Context, lokasiID string) (entity.Lokasi, error) {
 	return us.lokasiRepository.FindLokasiByID(ctx, lokasiID)
 }
 
-func (us *lokasiService) DeleteLokasi(ctx context.Context, lokasiID uuid.UUID) error {
+func (us *lokasiService) DeleteLokasi(ctx context.Context, lokasiID string) error {
 	return us.lokasiRepository.DeleteLokasi(ctx, lokasiID)
 }
 

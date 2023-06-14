@@ -7,7 +7,6 @@ import (
 	"fp-mbd-amidrive/helpers"
 	"fp-mbd-amidrive/repository"
 
-	"github.com/google/uuid"
 	"github.com/mashingan/smapping"
 )
 
@@ -15,12 +14,12 @@ type UserService interface {
 	RegisterUser(ctx context.Context, userDTO dto.UserCreateDto) (entity.User, error)
 	GetAllUser(ctx context.Context) ([]entity.User, error)
 	FindUserByEmail(ctx context.Context, email string) (entity.User, error)
-	FindUserByID(ctx context.Context, userID uuid.UUID) (entity.User, error)
+	FindUserByID(ctx context.Context, userID string) (entity.User, error)
 	Verify(ctx context.Context, email string, password string) (bool, error)
 	CheckUser(ctx context.Context, email string) (bool, error)
-	DeleteUser(ctx context.Context, userID uuid.UUID) error
+	DeleteUser(ctx context.Context, userID string) error
 	UpdateUser(ctx context.Context, userDTO dto.UserUpdateDto) error
-	MeUser(ctx context.Context, userID uuid.UUID) (entity.User, error)
+	MeUser(ctx context.Context, userID string) (entity.User, error)
 }
 
 type userService struct {
@@ -51,7 +50,7 @@ func (us *userService) FindUserByEmail(ctx context.Context, email string) (entit
 	return us.userRepository.FindUserByEmail(ctx, email)
 }
 
-func (us *userService) FindUserByID(ctx context.Context, userID uuid.UUID) (entity.User, error) {
+func (us *userService) FindUserByID(ctx context.Context, userID string) (entity.User, error) {
 	return us.userRepository.FindUserByID(ctx, userID)
 }
 
@@ -82,7 +81,7 @@ func (us *userService) CheckUser(ctx context.Context, email string) (bool, error
 	return true, nil
 }
 
-func (us *userService) DeleteUser(ctx context.Context, userID uuid.UUID) error {
+func (us *userService) DeleteUser(ctx context.Context, userID string) error {
 	return us.userRepository.DeleteUser(ctx, userID)
 }
 
@@ -95,6 +94,6 @@ func (us *userService) UpdateUser(ctx context.Context, userDTO dto.UserUpdateDto
 	return us.userRepository.UpdateUser(ctx, user)
 }
 
-func (us *userService) MeUser(ctx context.Context, userID uuid.UUID) (entity.User, error) {
+func (us *userService) MeUser(ctx context.Context, userID string) (entity.User, error) {
 	return us.userRepository.FindUserByID(ctx, userID)
 }

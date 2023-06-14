@@ -7,7 +7,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 )
 
 type MembershipController interface {
@@ -93,12 +92,7 @@ func (ms *membershipController) DeleteMembership(ctx *gin.Context) {
 }
 
 func (ms *membershipController) GetMembershipByUserId(ctx *gin.Context) {
-	userID, err := uuid.Parse(ctx.Param("id"))
-	if err != nil {
-		res := common.BuildErrorResponse("Gagal Mendapatkan Membership User", err.Error(), common.EmptyObj{})
-		ctx.JSON(http.StatusBadRequest, res)
-		return
-	}
+	userID := ctx.Param("id")
 
 	result, err := ms.membershipService.GetMembershipByUserId(ctx.Request.Context(), userID)
 	if err != nil {

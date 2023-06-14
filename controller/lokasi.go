@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/umahmood/haversine"
 )
 
@@ -133,7 +132,7 @@ func (lc *lokasiController) GetAllLokasi(ctx *gin.Context) {
 }
 
 func (lc *lokasiController) GetLokasi(ctx *gin.Context) {
-	lokasiID, err := uuid.Parse(ctx.Param("id"))
+	lokasiID := ctx.Param("id")
 
 	result, err := lc.lokasiService.GetLokasi(ctx.Request.Context(), lokasiID)
 	if err != nil {
@@ -147,9 +146,9 @@ func (lc *lokasiController) GetLokasi(ctx *gin.Context) {
 }
 
 func (lc *lokasiController) DeleteLokasi(ctx *gin.Context) {
-	lokasiID, err := uuid.Parse(ctx.Param("id"))
+	lokasiID := ctx.Param("id")
 
-	err = lc.lokasiService.DeleteLokasi(ctx.Request.Context(), lokasiID)
+	err := lc.lokasiService.DeleteLokasi(ctx.Request.Context(), lokasiID)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Menghapus Lokasi", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
@@ -168,7 +167,7 @@ func (lc *lokasiController) UpdateLokasi(ctx *gin.Context) {
 		return
 	}
 
-	lokasiID, err := uuid.Parse(ctx.Param("id"))
+	lokasiID := ctx.Param("id")
 	lokasi.ID = lokasiID
 	err = lc.lokasiService.UpdateLokasi(ctx.Request.Context(), lokasi)
 	if err != nil {

@@ -11,8 +11,8 @@ import (
 type LokasiRepository interface {
 	AddLokasi(ctx context.Context, lokasi entity.Lokasi) (entity.Lokasi, error)
 	GetAllLokasi(ctx context.Context) ([]entity.Lokasi, error)
-	FindLokasiByID(ctx context.Context, lokasiID uuid.UUID) (entity.Lokasi, error)
-	DeleteLokasi(ctx context.Context, lokasiID uuid.UUID) error
+	FindLokasiByID(ctx context.Context, lokasiID string) (entity.Lokasi, error)
+	DeleteLokasi(ctx context.Context, lokasiID string) error
 	UpdateLokasi(ctx context.Context, lokasi entity.Lokasi) error
 }
 
@@ -27,7 +27,7 @@ func NewLokasiRepository(db *gorm.DB) LokasiRepository {
 }
 
 func (db *lokasiConnection) AddLokasi(ctx context.Context, lokasi entity.Lokasi) (entity.Lokasi, error) {
-	lokasi.ID = uuid.New()
+	lokasi.ID = (uuid.New().String())
 	uc := db.connection.Create(&lokasi)
 	if uc.Error != nil {
 		return entity.Lokasi{}, uc.Error
@@ -44,7 +44,7 @@ func (db *lokasiConnection) GetAllLokasi(ctx context.Context) ([]entity.Lokasi, 
 	return listLokasi, nil
 }
 
-func (db *lokasiConnection) GetLokasi(ctx context.Context, LokasiID uuid.UUID) ([]entity.Lokasi, error) {
+func (db *lokasiConnection) GetLokasi(ctx context.Context, LokasiID string) ([]entity.Lokasi, error) {
 	var listLokasi []entity.Lokasi
 	tx := db.connection.Find(&listLokasi)
 	if tx.Error != nil {
@@ -62,7 +62,7 @@ func (db *lokasiConnection) FindLokasiByEmail(ctx context.Context, email string)
 	return lokasi, nil
 }
 
-func (db *lokasiConnection) FindLokasiByID(ctx context.Context, lokasiID uuid.UUID) (entity.Lokasi, error) {
+func (db *lokasiConnection) FindLokasiByID(ctx context.Context, lokasiID string) (entity.Lokasi, error) {
 	var lokasi entity.Lokasi
 	ux := db.connection.Where("id = ?", lokasiID).Take(&lokasi)
 	if ux.Error != nil {
@@ -71,7 +71,7 @@ func (db *lokasiConnection) FindLokasiByID(ctx context.Context, lokasiID uuid.UU
 	return lokasi, nil
 }
 
-func (db *lokasiConnection) DeleteLokasi(ctx context.Context, lokasiID uuid.UUID) error {
+func (db *lokasiConnection) DeleteLokasi(ctx context.Context, lokasiID string) error {
 	uc := db.connection.Delete(&entity.Lokasi{}, &lokasiID)
 	if uc.Error != nil {
 		return uc.Error
