@@ -41,6 +41,10 @@ func main() {
 		mobilService    service.MobilService       = service.NewMobilService(mobilRepository, userRepository, tipeRepository)
 		mobilController controller.MobilController = controller.NewMobilController(mobilService, jwtService)
 
+		reviewRepository repository.ReviewRepository = repository.NewReviewhipRepository(db)
+		reviewService    service.ReviewService       = service.NewReviewService(reviewRepository)
+		reviewController controller.ReviewController = controller.NewReviewController(reviewService, jwtService)
+
 		lokasiRepository repository.LokasiRepository = repository.NewLokasiRepository(db)
 		lokasiService    service.LokasiService       = service.NewLokasiService(lokasiRepository)
 		lokasiController controller.LokasiController = controller.NewLokasiController(lokasiService, mobilService, jwtService)
@@ -67,6 +71,7 @@ func main() {
 	routes.MetodePembayaranRoutes(server, metodePembayaranController, jwtService)
 	routes.TransaksiRoutes(server, transaksiController, jwtService)
 	routes.TipeRoutes(server, tipeController, jwtService)
+	routes.ReviewRoutes(server, reviewController, jwtService)
 
 	port := os.Getenv("PORT")
 	ip := os.Getenv("IP")

@@ -97,25 +97,25 @@ func (rc *reviewController) GetAllMobilReview(ctx *gin.Context) {
 
 	result, err := rc.reviewService.GetAllMobilReview(ctx.Request.Context(), mobilID)
 	if err != nil {
-		res := common.BuildErrorResponse("Gagal Mendapatkan List Tipe Mobil", err.Error(), common.EmptyObj{})
+		res := common.BuildErrorResponse("Gagal Mendapatkan List Review Mobil", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
 
-	res := common.BuildResponse(true, "Berhasil Mendapatkan List Tipe Mobil", result)
+	res := common.BuildResponse(true, "Berhasil Mendapatkan List Review Mobil", result)
 	ctx.JSON(http.StatusOK, res)
 }
 
 func (rc *reviewController) GetAllUserReview(ctx *gin.Context) {
 	userID := ctx.Param("id")
 
-	result, err := rc.reviewService.GetAllMobilReview(ctx.Request.Context(), userID)
+	result, err := rc.reviewService.GetAllUserReview(ctx.Request.Context(), userID)
 	if err != nil {
-		res := common.BuildErrorResponse("Gagal Mendapatkan List Tipe Mobil", err.Error(), common.EmptyObj{})
+		res := common.BuildErrorResponse("Gagal Mendapatkan List Review Mobil", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
 
-	res := common.BuildResponse(true, "Berhasil Mendapatkan List Tipe Mobil", result)
+	res := common.BuildResponse(true, "Berhasil Mendapatkan List Review Mobil", result)
 	ctx.JSON(http.StatusOK, res)
 }

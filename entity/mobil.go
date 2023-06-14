@@ -10,12 +10,17 @@ type Mobil struct {
 	KapasitasMesin     string  `json:"kapasitas_mesin" gorm:"not null"`
 	PhotoURL           string  `json:"photo_url"`
 
-	UserID           string  `json:"user_id" gorm:"size:36"`
-	TipeMobilID      uint8   `json:"tipe_mobil_id"`
-	TipePersnelingID uint8   `json:"tipe_persneling_id"`
-	TipeMesinID      uint8   `json:"tipe_mesin_id"`
-	LokasiID         string  `json:"lokasi_id" gorm:"size:36"`
-	Rating           float32 `json:"rating" gorm:"not null"`
+	UserID           string          `json:"user_id" gorm:"size:36"`
+	User             *User           `json:",omitempty"`
+	TipeMobilID      uint8           `json:"tipe_mobil_id"`
+	TipeMobil        *TipeMobil      `json:",omitempty"`
+	TipePersnelingID uint8           `json:"tipe_persneling_id"`
+	TipePersneling   *TipePersneling `json:",omitempty"`
+	TipeMesinID      uint8           `json:"tipe_mesin_id"`
+	TipeMesin        *TipeMesin      `json:",omitempty"`
+	LokasiID         string          `json:"lokasi_id" gorm:"size:36"`
+	Lokasi           *Lokasi         `json:",omitempty"`
+	Rating           float32         `json:"rating" gorm:"not null"`
 
 	ReviewMobil []ReviewMobil `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
 	Transaksi   []Transaksi   `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`

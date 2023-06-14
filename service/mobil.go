@@ -15,7 +15,7 @@ type MobilService interface {
 	GetMobil(ctx context.Context, mobilID string) (entity.Mobil, error)
 	DeleteMobil(ctx context.Context, mobilID string) error
 	UpdateMobil(ctx context.Context, mobilDTO dto.MobilUpdateDto) error
-	GetMobilByLokasiID(ctx context.Context, lokasiID string, lokasiName string, distance float64) ([]dto.MobilGetDto, error)
+	GetMobilByLokasiID(ctx context.Context, lokasiID string) ([]entity.Mobil, error)
 }
 
 type mobilService struct {
@@ -49,42 +49,12 @@ func (us *mobilService) GetMobil(ctx context.Context, mobilID string) (entity.Mo
 	return us.mobilRepository.FindMobilByID(ctx, mobilID)
 }
 
-func (us *mobilService) GetMobilByLokasiID(ctx context.Context, lokasiID string, lokasiName string, distance float64) ([]dto.MobilGetDto, error) {
+func (us *mobilService) GetMobilByLokasiID(ctx context.Context, lokasiID string) ([]entity.Mobil, error) {
 	mobilList, err := us.mobilRepository.GetMobilByLokasiID(ctx, lokasiID)
-	var result []dto.MobilGetDto
 	if err != nil {
-		return result, err
+		return mobilList, err
 	}
-	for _, x := range mobilList {
-		user, _ := us.userRepository.FindUserByID(ctx, x.UserID)
-		tipeMobil, _ := us.tipeRepository.GetTipeMobilByID(ctx, x.TipeMobilID)
-		tipeMesin, _ := us.tipeRepository.GetTipeMesinByID(ctx, x.TipeMesinID)
-		tipePersneling, _ := us.tipeRepository.GetTipePersnelingByID(ctx, x.TipePersnelingID)
-		result = append(result, dto.MobilGetDto{
-			ID:                 x.ID,
-			Nama:               x.Nama,
-			Price:              x.Price,
-			PelatNo:            x.PelatNo,
-			KapasitasPenumpang: x.KapasitasPenumpang,
-			Status:             x.Status,
-			KapasitasMesin:     x.KapasitasMesin,
-			PhotoURL:           x.PhotoURL,
-
-			Mitra:            user.Name,
-			MitraID:          x.UserID,
-			TipeMobil:        tipeMobil.Tipe,
-			TipeMobilID:      uint(x.TipeMobilID),
-			TipePersneling:   tipePersneling.Tipe,
-			TipePersnelingID: uint(x.TipePersnelingID),
-			TipeMesin:        tipeMesin.Tipe,
-			TipeMesinID:      uint(x.TipePersnelingID),
-			Lokasi:           lokasiName,
-			LokasiID:         x.LokasiID,
-			Distance:         distance,
-			Rating:           x.Rating,
-		})
-	}
-	return result, nil
+	return mobilList, nil
 }
 
 func (us *mobilService) DeleteMobil(ctx context.Context, mobilID string) error {

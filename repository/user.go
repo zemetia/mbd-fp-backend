@@ -38,7 +38,7 @@ func (db *userConnection) RegisterUser(ctx context.Context, user entity.User) (e
 
 func (db *userConnection) GetAllUser(ctx context.Context) ([]entity.User, error) {
 	var listUser []entity.User
-	tx := db.connection.Find(&listUser)
+	tx := db.connection.Preload("Membership").Find(&listUser)
 	// tx := db.connection.Raw("SELECT * FROM `ayam_geprek`").Scan(&listUser)
 	if tx.Error != nil {
 		return nil, tx.Error
@@ -48,7 +48,7 @@ func (db *userConnection) GetAllUser(ctx context.Context) ([]entity.User, error)
 
 func (db *userConnection) FindUserByEmail(ctx context.Context, email string) (entity.User, error) {
 	var user entity.User
-	ux := db.connection.Where("email = ?", email).Take(&user)
+	ux := db.connection.Where("email = ?", email).Preload("Membership").Take(&user)
 	if ux.Error != nil {
 		return user, ux.Error
 	}
@@ -57,7 +57,7 @@ func (db *userConnection) FindUserByEmail(ctx context.Context, email string) (en
 
 func (db *userConnection) FindUserByID(ctx context.Context, userID string) (entity.User, error) {
 	var user entity.User
-	ux := db.connection.Where("id = ?", userID).Take(&user)
+	ux := db.connection.Where("id = ?", userID).Preload("Membership").Take(&user)
 	if ux.Error != nil {
 		return user, ux.Error
 	}

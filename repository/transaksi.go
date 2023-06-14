@@ -7,6 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type TransaksiRepository interface {
@@ -40,7 +41,7 @@ func (db *transaksiConnection) AddTransaksi(ctx context.Context, transaksi entit
 
 func (db *transaksiConnection) GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error) {
 	var listTransaksi []entity.Transaksi
-	tx := db.connection.Preload("User").Find(&listTransaksi)
+	tx := db.connection.Preload(clause.Associations).Find(&listTransaksi)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -49,7 +50,7 @@ func (db *transaksiConnection) GetAllTransaksi(ctx context.Context) ([]entity.Tr
 
 func (db *transaksiConnection) GetTransaksi(ctx context.Context, TransaksiID string) ([]entity.Transaksi, error) {
 	var listTransaksi []entity.Transaksi
-	tx := db.connection.Find(&listTransaksi)
+	tx := db.connection.Preload(clause.Associations).Find(&listTransaksi)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -58,7 +59,7 @@ func (db *transaksiConnection) GetTransaksi(ctx context.Context, TransaksiID str
 
 func (db *transaksiConnection) FindTransaksiByEmail(ctx context.Context, email string) (entity.Transaksi, error) {
 	var transaksi entity.Transaksi
-	ux := db.connection.Where("email = ?", email).Take(&transaksi)
+	ux := db.connection.Where("email = ?", email).Preload(clause.Associations).Take(&transaksi)
 	if ux.Error != nil {
 		return transaksi, ux.Error
 	}
@@ -67,7 +68,7 @@ func (db *transaksiConnection) FindTransaksiByEmail(ctx context.Context, email s
 
 func (db *transaksiConnection) FindTransaksiByID(ctx context.Context, transaksiID string) (entity.Transaksi, error) {
 	var transaksi entity.Transaksi
-	ux := db.connection.Where("id = ?", transaksiID).Take(&transaksi)
+	ux := db.connection.Where("id = ?", transaksiID).Preload(clause.Associations).Take(&transaksi)
 	if ux.Error != nil {
 		return transaksi, ux.Error
 	}

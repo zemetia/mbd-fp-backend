@@ -14,6 +14,7 @@ type User struct {
 	Password       string        `json:"password"`
 	Role           string        `json:"role"`
 	MembershipTier string        `json:"membership"`
+	Membership     *Membership   `json:",omitempty"`
 	PhotoURL       string        `json:"photo_url"`
 	ReviewMobil    []ReviewMobil `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Mobil          []Mobil       `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`

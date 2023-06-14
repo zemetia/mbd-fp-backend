@@ -3,6 +3,7 @@ package controller
 import (
 	"fp-mbd-amidrive/common"
 	"fp-mbd-amidrive/dto"
+	"fp-mbd-amidrive/entity"
 	"fp-mbd-amidrive/service"
 	"net/http"
 	"sort"
@@ -117,9 +118,9 @@ func (lc *lokasiController) GetAllLokasi(ctx *gin.Context) {
 		return
 	}
 
-	var listMobil []dto.MobilGetDto
+	var listMobil []entity.Mobil
 	for _, x := range lokasiList {
-		mobil, _ := lc.mobilService.GetMobilByLokasiID(ctx, x.ID, x.Name, x.Distance)
+		mobil, _ := lc.mobilService.GetMobilByLokasiID(ctx, x.ID)
 
 		if mobil == nil {
 			continue

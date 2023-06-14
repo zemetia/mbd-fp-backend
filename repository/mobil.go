@@ -38,7 +38,7 @@ func (db *mobilConnection) AddMobil(ctx context.Context, mobil entity.Mobil) (en
 
 func (db *mobilConnection) GetAllMobil(ctx context.Context) ([]entity.Mobil, error) {
 	var listMobil []entity.Mobil
-	tx := db.connection.Find(&listMobil)
+	tx := db.connection.Preload("User").Preload("TipeMesin").Preload("TipeMobil").Preload("TipePersneling").Preload("Lokasi").Find(&listMobil)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -47,7 +47,7 @@ func (db *mobilConnection) GetAllMobil(ctx context.Context) ([]entity.Mobil, err
 
 func (db *mobilConnection) GetMobil(ctx context.Context, MobilID string) ([]entity.Mobil, error) {
 	var listMobil []entity.Mobil
-	tx := db.connection.Find(&listMobil)
+	tx := db.connection.Preload("User").Preload("TipeMesin").Preload("TipeMobil").Preload("TipePersneling").Preload("Lokasi").Find(&listMobil)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -56,7 +56,7 @@ func (db *mobilConnection) GetMobil(ctx context.Context, MobilID string) ([]enti
 
 func (db *mobilConnection) FindMobilByEmail(ctx context.Context, email string) (entity.Mobil, error) {
 	var mobil entity.Mobil
-	ux := db.connection.Where("email = ?", email).Take(&mobil)
+	ux := db.connection.Where("email = ?", email).Preload("User").Preload("TipeMesin").Preload("TipeMobil").Preload("TipePersneling").Preload("Lokasi").Take(&mobil)
 	if ux.Error != nil {
 		return mobil, ux.Error
 	}
@@ -65,7 +65,7 @@ func (db *mobilConnection) FindMobilByEmail(ctx context.Context, email string) (
 
 func (db *mobilConnection) FindMobilByID(ctx context.Context, mobilID string) (entity.Mobil, error) {
 	var mobil entity.Mobil
-	ux := db.connection.Where("id = ?", mobilID).Take(&mobil)
+	ux := db.connection.Where("id = ?", mobilID).Preload("User").Preload("TipeMesin").Preload("TipeMobil").Preload("TipePersneling").Preload("Lokasi").Take(&mobil)
 	if ux.Error != nil {
 		return mobil, ux.Error
 	}
@@ -74,7 +74,7 @@ func (db *mobilConnection) FindMobilByID(ctx context.Context, mobilID string) (e
 
 func (db *mobilConnection) GetMobilByLokasiID(ctx context.Context, lokasiID string) ([]entity.Mobil, error) {
 	var mobilList []entity.Mobil
-	ux := db.connection.Where("lokasi_id = ?", lokasiID).Find(&mobilList)
+	ux := db.connection.Where("lokasi_id = ?", lokasiID).Preload("User").Preload("TipeMesin").Preload("TipeMobil").Preload("TipePersneling").Preload("Lokasi").Find(&mobilList)
 	if ux.Error != nil {
 		return mobilList, ux.Error
 	}
