@@ -24,11 +24,13 @@ type LokasiController interface {
 type lokasiController struct {
 	jwtService    service.JWTService
 	lokasiService service.LokasiService
+	mobilService  service.MobilService
 }
 
-func NewLokasiController(us service.LokasiService, jwts service.JWTService) LokasiController {
+func NewLokasiController(us service.LokasiService, ms service.MobilService, jwts service.JWTService) LokasiController {
 	return &lokasiController{
 		lokasiService: us,
+		mobilService:  ms,
 		jwtService:    jwts,
 	}
 }
@@ -67,13 +69,20 @@ func (lc *lokasiController) GetAllLokasi(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
-	userPos := haversine.Coord{Lat: longitude, Lon: latitude}
+	userPos := haversine.Coord{Lat: latitude, Lon: longitude}
 	distLimit, err := strconv.ParseFloat(ctx.DefaultQuery("dist", "99999"), 64)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Mendapatkan List Lokasi", err.Error(), common.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
+	isPickup, err := strconv.ParseBool(ctx.DefaultQuery("isPickup", "true"))
+	if err != nil {
+		res := common.BuildErrorResponse("Gagal Mendapatkan List Lokasi", err.Error(), common.EmptyObj{})
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
 	// Get distances of locations
 	var lokasiList []dto.LokasiGetAllDto
 	for _, x := range result {
@@ -95,7 +104,31 @@ func (lc *lokasiController) GetAllLokasi(ctx *gin.Context) {
 	sort.Slice(lokasiList, func(i, j int) bool {
 		return lokasiList[i].Distance < lokasiList[j].Distance
 	})
-	res := common.BuildResponse(true, "Berhasil Mendapatkan List Lokasi", lokasiList)
+
+	limit := len(lokasiList)
+	if limit > 10 {
+		limit = 10
+	}
+
+	lokasiList = lokasiList[:limit]
+
+	if isPickup {
+		res := common.BuildResponse(true, "Berhasil Mendapatkan List Lokasi", lokasiList[:limit])
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+	var listMobil []dto.MobilGetDto
+	for _, x := range lokasiList {
+		mobil, _ := lc.mobilService.GetMobilByLokasiID(ctx, x.ID, x.Name, x.Distance)
+
+		if mobil == nil {
+			continue
+		}
+
+		listMobil = append(listMobil, mobil...)
+	}
+	res := common.BuildResponse(true, "Berhasil Mendapatkan List Mobil", listMobil)
 	ctx.JSON(http.StatusOK, res)
 }
 

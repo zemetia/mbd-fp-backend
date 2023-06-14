@@ -10,8 +10,8 @@ type Lokasi struct {
 	Longtitude string    `gorm:"not_null" json:"longtitude"`
 	Latitude   string    `gorm:"not_null" json:"latitude"`
 
-	Mobil     []Mobil
-	Transaksi []Transaksi
+	Mobil     []Mobil     `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Transaksi []Transaksi `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 
 	Timestamp
 }

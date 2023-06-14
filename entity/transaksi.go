@@ -14,10 +14,10 @@ type Transaksi struct {
 	Diskon             float32   `json:"diskon"`
 	TotalHarga         float32   `json:"total_harga"`
 	TotalDenda         float32   `json:"total_denda"`
-	MobilID            uuid.UUID `json:"mobil_id" gorm:"size:36;not null"`
-	UserID             uuid.UUID `json:"user_id" gorm:"size:36;not null"`
-	MetodePembayaranID uint8     `json:"metode_pembayaran_id" gorm:"not null"`
-	LokasiID           uuid.UUID `json:"lokasi_id" gorm:"size:36;not null"`
+	MobilID            uuid.UUID `json:"mobil_id" gorm:"size:36;"`
+	UserID             uuid.UUID `json:"user_id" gorm:"size:36;"`
+	MetodePembayaranID uint8     `json:"metode_pembayaran_id"`
+	LokasiID           uuid.UUID `json:"lokasi_id" gorm:"size:36"`
 
 	Timestamp
 }

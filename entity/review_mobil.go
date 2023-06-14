@@ -9,6 +9,6 @@ type ReviewMobil struct {
 	Review  string    `json:"review" gorm:"not null"`
 	Rating  uint16    `json:"rating" gorm:"not null"`
 	MobilID uuid.UUID `json:"mobil_id" gorm:"not null;size:36"`
-	UserID  uuid.UUID `json:"user_id" gorm:"not null;size:36"`
+	UserID  uuid.UUID `json:"user_id" gorm:"size:36"`
 	Timestamp
 }

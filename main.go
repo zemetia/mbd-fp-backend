@@ -33,13 +33,17 @@ func main() {
 		userService    service.UserService       = service.NewUserService(userRepository)
 		userController controller.UserController = controller.NewUserController(userService, jwtService)
 
-		lokasiRepository repository.LokasiRepository = repository.NewLokasiRepository(db)
-		lokasiService    service.LokasiService       = service.NewLokasiService(lokasiRepository)
-		lokasiController controller.LokasiController = controller.NewLokasiController(lokasiService, jwtService)
+		tipeRepository repository.TipeRepository = repository.NewTipeRepository(db)
+		tipeService    service.TipeService       = service.NewTipeService(tipeRepository)
+		tipeController controller.TipeController = controller.NewTipeController(tipeService, jwtService)
 
 		mobilRepository repository.MobilRepository = repository.NewMobilRepository(db)
-		mobilService    service.MobilService       = service.NewMobilService(mobilRepository)
+		mobilService    service.MobilService       = service.NewMobilService(mobilRepository, userRepository, tipeRepository)
 		mobilController controller.MobilController = controller.NewMobilController(mobilService, jwtService)
+
+		lokasiRepository repository.LokasiRepository = repository.NewLokasiRepository(db)
+		lokasiService    service.LokasiService       = service.NewLokasiService(lokasiRepository)
+		lokasiController controller.LokasiController = controller.NewLokasiController(lokasiService, mobilService, jwtService)
 
 		membershipRepository repository.MembershipRepository = repository.NewMembershipRepository(db)
 		membershipService    service.MembershipService       = service.NewMembershipService(membershipRepository)
@@ -50,7 +54,7 @@ func main() {
 		metodePembayaranController controller.MetodePembayaranController = controller.NewMetodePembayaranController(metodePembayaranService, jwtService)
 
 		transaksiRepository repository.TransaksiRepository = repository.NewTransaksiRepository(db)
-		transaksiService    service.TransaksiService       = service.NewTransaksiService(transaksiRepository, mobilRepository, userRepository)
+		transaksiService    service.TransaksiService       = service.NewTransaksiService(transaksiRepository, mobilRepository, userRepository, membershipRepository)
 		transaksiController controller.TransaksiController = controller.NewTransaksiController(transaksiService, jwtService)
 	)
 
@@ -62,6 +66,7 @@ func main() {
 	routes.MembershipRoutes(server, membershipController, jwtService)
 	routes.MetodePembayaranRoutes(server, metodePembayaranController, jwtService)
 	routes.TransaksiRoutes(server, transaksiController, jwtService)
+	routes.TipeRoutes(server, tipeController, jwtService)
 
 	port := os.Getenv("PORT")
 	ip := os.Getenv("IP")

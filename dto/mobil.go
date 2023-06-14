@@ -39,3 +39,27 @@ type MobilUpdateDto struct {
 	LokasiID         uuid.UUID `json:"lokasi_id" form:"lokasi_id" binding:"required"`
 	Rating           float32   `json:"rating" form:"rating" binding:"required"`
 }
+
+type MobilGetDto struct {
+	ID                 uuid.UUID
+	Nama               string  `json:"nama"`
+	Price              float32 `json:"price"`
+	PelatNo            string  `json:"pelat"`
+	KapasitasPenumpang uint8   `json:"kapasitas_penumpang"`
+	Status             bool    `json:"status"`
+	KapasitasMesin     string  `json:"kapasitas_mesin"`
+	PhotoURL           string  `json:"photo_url"`
+
+	Mitra            string    `json:"mitra"`
+	MitraID          uuid.UUID `json:"mitra_id,omitempty"`
+	TipeMobil        string    `json:"tipe_mobil"`
+	TipeMobilID      uint      `json:"tipe_mobil_id,omitempty"`
+	TipePersneling   string    `json:"tipe_persneling"`
+	TipePersnelingID uint      `json:"tipe_persneling_id,omitempty"`
+	TipeMesin        string    `json:"tipe_mesin"`
+	TipeMesinID      uint      `json:"tipe_mesin_id,omitempty"`
+	Lokasi           string    `json:"lokasi"`
+	LokasiID         uuid.UUID `json:"lokasi_id,omitempty"`
+	Distance         float64   `json:"distance,omitempty"`
+	Rating           float32   `json:"rating"`
+}

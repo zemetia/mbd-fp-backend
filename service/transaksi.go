@@ -12,7 +12,7 @@ import (
 
 type TransaksiService interface {
 	AddTransaksi(ctx context.Context, transaksiDTO dto.TransaksiCreateDto) (entity.Transaksi, error)
-	GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error)
+	GetAllTransaksi(ctx context.Context) ([]dto.TransaksiGetDto, error)
 	GetTransaksi(ctx context.Context, transaksiID uuid.UUID) (entity.Transaksi, error)
 	DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error
 	UpdateTransaksi(ctx context.Context, transaksiDTO dto.TransaksiUpdateDto) error
@@ -20,16 +20,18 @@ type TransaksiService interface {
 }
 
 type transaksiService struct {
-	transaksiRepository repository.TransaksiRepository
-	mobilRepository     repository.MobilRepository
-	userRepository      repository.UserRepository
+	transaksiRepository  repository.TransaksiRepository
+	mobilRepository      repository.MobilRepository
+	userRepository       repository.UserRepository
+	membershipRepository repository.MembershipRepository
 }
 
-func NewTransaksiService(tr repository.TransaksiRepository, mr repository.MobilRepository, ur repository.UserRepository) TransaksiService {
+func NewTransaksiService(tr repository.TransaksiRepository, mr repository.MobilRepository, ur repository.UserRepository, mr2 repository.MembershipRepository) TransaksiService {
 	return &transaksiService{
-		transaksiRepository: tr,
-		mobilRepository:     mr,
-		userRepository:      ur,
+		transaksiRepository:  tr,
+		mobilRepository:      mr,
+		userRepository:       ur,
+		membershipRepository: mr2,
 	}
 }
 
@@ -47,8 +49,14 @@ func (us *transaksiService) AddTransaksi(ctx context.Context, transaksiDTO dto.T
 		return transaksi, err
 	}
 
+	membership, err := us.membershipRepository.GetMembershipByUserId(ctx, transaksi.UserID)
+
+	if err != nil {
+		return transaksi, err
+	}
+
 	timediff := float32(transaksi.TglAmbil.Sub(transaksi.TglKembali)/24 + 1)
-	transaksi.TotalHarga = timediff * mobil.Price
+	transaksi.TotalHarga = timediff * mobil.Price * (1 - (float32(membership.Diskon) / 100))
 
 	if err != nil {
 		return transaksi, err
@@ -56,7 +64,7 @@ func (us *transaksiService) AddTransaksi(ctx context.Context, transaksiDTO dto.T
 	return us.transaksiRepository.AddTransaksi(ctx, transaksi)
 }
 
-func (us *transaksiService) GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error) {
+func (us *transaksiService) GetAllTransaksi(ctx context.Context) ([]dto.TransaksiGetDto, error) {
 	return us.transaksiRepository.GetAllTransaksi(ctx)
 }
 

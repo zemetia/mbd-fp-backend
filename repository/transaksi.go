@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fp-mbd-amidrive/dto"
 	"fp-mbd-amidrive/entity"
 	"time"
 
@@ -11,7 +12,7 @@ import (
 
 type TransaksiRepository interface {
 	AddTransaksi(ctx context.Context, transaksi entity.Transaksi) (entity.Transaksi, error)
-	GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error)
+	GetAllTransaksi(ctx context.Context) ([]dto.TransaksiGetDto, error)
 	FindTransaksiByID(ctx context.Context, transaksiID uuid.UUID) (entity.Transaksi, error)
 	DeleteTransaksi(ctx context.Context, transaksiID uuid.UUID) error
 	UpdateTransaksi(ctx context.Context, transaksi entity.Transaksi) error
@@ -38,9 +39,9 @@ func (db *transaksiConnection) AddTransaksi(ctx context.Context, transaksi entit
 	return transaksi, nil
 }
 
-func (db *transaksiConnection) GetAllTransaksi(ctx context.Context) ([]entity.Transaksi, error) {
-	var listTransaksi []entity.Transaksi
-	tx := db.connection.Find(&listTransaksi)
+func (db *transaksiConnection) GetAllTransaksi(ctx context.Context) ([]dto.TransaksiGetDto, error) {
+	var listTransaksi []dto.TransaksiGetDto
+	tx := db.connection.Joins("JOIN users on users.id = transaksis.user_id").Find(&listTransaksi)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

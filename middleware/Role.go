@@ -21,7 +21,7 @@ func Role(userService service.UserService, role []string) gin.HandlerFunc {
 			return
 		}
 
-		if helpers.Contains(role, user.Role) {
+		if !helpers.Contains(role, user.Role) {
 			response := common.BuildErrorResponse("Role tidak sesuai", "Tidak ada user", nil)
 			ctx.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return

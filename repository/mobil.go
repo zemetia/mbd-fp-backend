@@ -14,6 +14,7 @@ type MobilRepository interface {
 	FindMobilByID(ctx context.Context, mobilID uuid.UUID) (entity.Mobil, error)
 	DeleteMobil(ctx context.Context, mobilID uuid.UUID) error
 	UpdateMobil(ctx context.Context, mobil entity.Mobil) error
+	GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UUID) ([]entity.Mobil, error)
 }
 
 type mobilConnection struct {
@@ -69,6 +70,15 @@ func (db *mobilConnection) FindMobilByID(ctx context.Context, mobilID uuid.UUID)
 		return mobil, ux.Error
 	}
 	return mobil, nil
+}
+
+func (db *mobilConnection) GetMobilByLokasiID(ctx context.Context, lokasiID uuid.UUID) ([]entity.Mobil, error) {
+	var mobilList []entity.Mobil
+	ux := db.connection.Where("lokasi_id = ?", lokasiID).Find(&mobilList)
+	if ux.Error != nil {
+		return mobilList, ux.Error
+	}
+	return mobilList, nil
 }
 
 func (db *mobilConnection) DeleteMobil(ctx context.Context, mobilID uuid.UUID) error {

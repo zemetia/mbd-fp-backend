@@ -16,9 +16,9 @@ type User struct {
 	Role           string        `json:"role"`
 	MembershipTier string        `json:"membership"`
 	PhotoURL       string        `json:"photo_url"`
-	ReviewMobil    []ReviewMobil `json:",omitempty"`
-	Mobil          []Mobil       `json:",omitempty"`
-
+	ReviewMobil    []ReviewMobil `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	Mobil          []Mobil       `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Transaksi      []Transaksi   `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 	Timestamp
 }
 

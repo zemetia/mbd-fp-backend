@@ -18,8 +18,9 @@ type Mobil struct {
 	TipeMobilID      uint8     `json:"tipe_mobil_id"`
 	TipePersnelingID uint8     `json:"tipe_persneling_id"`
 	TipeMesinID      uint8     `json:"tipe_mesin_id"`
-	LokasiID         uuid.UUID `json:"lokasi_id" gorm:"size:36;not null"`
+	LokasiID         uuid.UUID `json:"lokasi_id" gorm:"size:36"`
 	Rating           float32   `json:"rating" gorm:"not null"`
 
-	ReviewMobil []ReviewMobil
+	ReviewMobil []ReviewMobil `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Transaksi   []Transaksi   `json:",omitempty" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
