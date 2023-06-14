@@ -5,21 +5,21 @@ import (
 )
 
 type MobilCreateDto struct {
-	ID                 uuid.UUID `gorm:"primary_key;not_null"`
-	Nama               string    `json:"nama" form:"nama" binding:"required"`
-	Price              float32   `json:"price" form:"price" binding:"required"`
-	PelatNo            string    `json:"pelat" form:"pelat" binding:"required"`
-	KapasitasPenumpang uint8     `json:"kapasitas_penumpang" form:"kapasitas_penumpang" binding:"required"`
-	Status             bool      `json:"status" form:"status" binding:"required"`
-	KapasitasMesin     string    `json:"kapasitas_mesin" form:"kapasitas_mesin" binding:"required"`
-	PhotoURL           string    `json:"photo_url" form:"photo_url"`
+	// ID                 string  `gorm:"primary_key;not_null"`
+	Nama               string  `json:"nama" form:"nama" binding:"required"`
+	Price              float32 `json:"price" form:"price" binding:"required"`
+	PelatNo            string  `json:"pelat_no" form:"pelat_no" binding:"required"`
+	KapasitasPenumpang uint8   `json:"kapasitas_penumpang" form:"kapasitas_penumpang" binding:"required"`
+	Status             bool    `json:"status" form:"status" binding:"required"`
+	KapasitasMesin     string  `json:"kapasitas_mesin" form:"kapasitas_mesin" binding:"required"`
+	PhotoURL           string  `json:"photo_url" form:"photo_url"`
 
-	UserID           uuid.UUID `json:"mitra_id" form:"mitra_id" binding:"required"`
-	TipeMobilID      uint      `json:"tipe_mobil_id" form:"tipe_mobil_id" binding:"required"`
-	TipePersnelingID uint      `json:"tipe_persneling_id" form:"tipe_persneling_id" binding:"required"`
-	TipeMesinID      uint      `json:"tipe_mesin_id" form:"tipe_mesin_id" binding:"required"`
-	LokasiID         uuid.UUID `json:"lokasi_id" form:"lokasi_id" binding:"required"`
-	Rating           float32   `json:"rating" form:"rating" binding:"required"`
+	UserID           string  `json:"user_id" form:"user_id" binding:"required"`
+	TipeMobilID      uint8   `json:"tipe_mobil_id" form:"tipe_mobil_id" binding:"required"`
+	TipePersnelingID uint8   `json:"tipe_persneling_id" form:"tipe_persneling_id" binding:"required"`
+	TipeMesinID      uint8   `json:"tipe_mesin_id" form:"tipe_mesin_id" binding:"required"`
+	LokasiID         string  `json:"lokasi_id" form:"lokasi_id" binding:"required"`
+	Rating           float32 `json:"rating" form:"rating" binding:"required"`
 }
 
 type MobilUpdateDto struct {
@@ -32,11 +32,11 @@ type MobilUpdateDto struct {
 	KapasitasMesin     string    `json:"kapasitas_mesin" form:"kapasitas_mesin" binding:"required"`
 	PhotoURL           string    `json:"photo_url" form:"photo_url"`
 
-	UserID           uuid.UUID `json:"mitra_id" form:"mitra_id" binding:"required"`
-	TipeMobilID      uint      `json:"tipe_mobil_id" form:"tipe_mobil_id" binding:"required"`
-	TipePersnelingID uint      `json:"tipe_persneling_id" form:"tipe_persneling_id" binding:"required"`
-	TipeMesinID      uint      `json:"tipe_mesin_id" form:"tipe_mesin_id" binding:"required"`
-	LokasiID         uuid.UUID `json:"lokasi_id" form:"lokasi_id" binding:"required"`
+	UserID           uuid.UUID `json:"mitra_id" form:"mitra_id" binding:"required,uuid"`
+	TipeMobilID      uint8     `json:"tipe_mobil_id" form:"tipe_mobil_id" binding:"required"`
+	TipePersnelingID uint8     `json:"tipe_persneling_id" form:"tipe_persneling_id" binding:"required"`
+	TipeMesinID      uint8     `json:"tipe_mesin_id" form:"tipe_mesin_id" binding:"required"`
+	LokasiID         uuid.UUID `json:"lokasi_id" form:"lokasi_id" binding:"required,uuid"`
 	Rating           float32   `json:"rating" form:"rating" binding:"required"`
 }
 

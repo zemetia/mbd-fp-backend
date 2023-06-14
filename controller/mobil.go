@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"fp-mbd-amidrive/common"
 	"fp-mbd-amidrive/dto"
 	"fp-mbd-amidrive/service"
@@ -33,7 +34,7 @@ func NewMobilController(us service.MobilService, jwts service.JWTService) MobilC
 func (lc *mobilController) AddMobil(ctx *gin.Context) {
 	var mobil dto.MobilCreateDto
 	err := ctx.ShouldBind(&mobil)
-
+	fmt.Println(mobil)
 	result, err := lc.mobilService.AddMobil(ctx.Request.Context(), mobil)
 	if err != nil {
 		res := common.BuildErrorResponse("Gagal Menambahkan Mobil", err.Error(), common.EmptyObj{})
