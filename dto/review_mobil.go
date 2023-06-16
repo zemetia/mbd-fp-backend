@@ -5,7 +5,7 @@ type ReviewCreateDto struct {
 	Review  string `json:"review" form:"review" binding:"required"`
 	Rating  uint16 `json:"rating" form:"rating" binding:"required"`
 	MobilID string `json:"mobil_id" form:"mobil_id" binding:"required"`
-	UserID  string `json:"user_id" form:"mobil_id" binding:"required"`
+	UserID  string `json:"user_id" form:"user_id" binding:"required"`
 }
 
 type ReviewUpdateDto struct {
@@ -13,5 +13,5 @@ type ReviewUpdateDto struct {
 	Review  string `json:"review" form:"review"`
 	Rating  uint16 `json:"rating" form:"rating"`
 	MobilID string `json:"mobil_id" form:"mobil_id" binding:"required"`
-	UserID  string `json:"user_id" form:"mobil_id" binding:"required"`
+	UserID  string `json:"user_id" form:"user_id" binding:"required"`
 }

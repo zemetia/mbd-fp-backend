@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"fp-mbd-amidrive/entity"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type ReviewRepository interface {
@@ -29,6 +29,7 @@ func NewReviewhipRepository(db *gorm.DB) ReviewRepository {
 }
 
 func (db *reviewConnection) AddReview(ctx context.Context, review entity.ReviewMobil) (entity.ReviewMobil, error) {
+	review.ID = uuid.New().String()
 	mk := db.connection.Create(&review)
 	if mk.Error != nil {
 		return entity.ReviewMobil{}, mk.Error
@@ -54,7 +55,7 @@ func (db *reviewConnection) DeleteReview(ctx context.Context, reviewID string) e
 
 func (db *reviewConnection) GetReviewById(ctx context.Context, reviewID string) (entity.ReviewMobil, error) {
 	var review entity.ReviewMobil
-	mk := db.connection.Where("id = ?", reviewID).Preload(clause.Associations).Take(&review)
+	mk := db.connection.Where("id = ?", reviewID).Take(&review)
 	if mk.Error != nil {
 		return review, mk.Error
 	}
@@ -64,7 +65,7 @@ func (db *reviewConnection) GetReviewById(ctx context.Context, reviewID string) 
 func (db *reviewConnection) GetAllMobilReview(ctx context.Context, mobilID string) ([]entity.ReviewMobil, error) {
 	var listReview []entity.ReviewMobil
 	fmt.Println(mobilID)
-	mk := db.connection.Where("mobil_id = ?", mobilID).Preload(clause.Associations).Find(&listReview)
+	mk := db.connection.Where("mobil_id = ?", mobilID).Find(&listReview)
 	if mk.Error != nil {
 		return nil, mk.Error
 	}
@@ -74,7 +75,7 @@ func (db *reviewConnection) GetAllMobilReview(ctx context.Context, mobilID strin
 func (db *reviewConnection) GetAllUserReview(ctx context.Context, userID string) ([]entity.ReviewMobil, error) {
 	var review []entity.ReviewMobil
 	fmt.Println(userID)
-	mk := db.connection.Where("user_id = ?", userID).Preload(clause.Associations).Find(&review)
+	mk := db.connection.Where("user_id = ?", userID).Find(&review)
 	if mk.Error != nil {
 		return review, mk.Error
 	}
